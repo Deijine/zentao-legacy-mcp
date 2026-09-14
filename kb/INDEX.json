@@ -1,0 +1,2018 @@
+[
+  {
+    "section": "定制开发",
+    "file": "extension-dev_1340.html",
+    "md_file": "定制开发/extension-dev_1340.md",
+    "title": "API机制简介",
+    "preview": "####  一、API机制介绍：   前面章节讲述的扩展机制是需要直接开发PHP或者html, css, js等代码。zentaoPHP还提供了API机制，方便大家来和其他的系统进行集成。   API机制都是基于http协议的。返回的数据以json格式存储。   zentaoPHP架共实现了两种API机制。一种为直接的页面调用，一种通过超级model调用接口，直接调用model层的方法，下面我们一"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_1341.html",
+    "md_file": "定制开发/extension-dev_1341.md",
+    "title": "需要登录验证的API调用",
+    "preview": "在使用api机制进行集成的时候，有的应用场景会涉及到会话登录。这种情况下面会话调用需要经过下面的三个步骤：   ####  一、获得session。 首先要访问api模块的getSessionID方法，获得session。  GET方式：?m=api&f=getSessionID&t=json  ``` http://your-zentao.com/index.php?m=api&f=getSes"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_cmd-dev-1339.html",
+    "md_file": "定制开发/extension-dev_cmd-dev-1339.md",
+    "title": "命令行调用",
+    "preview": "除了扩展机制，API机制，禅道还提供了命令行的入口，给大家提供了另外一种控制应用的方式。   ####  一、何谓命令行入口   命令行入口位于bin/ztcli。其实它也是一段php代码。它主要是给系统管理员使用的。通过这个入口，可以非常方便的访问到禅道系统的每一个页面，从而为各种便利的操作提供了可能。   ####  二、命令行入口的基本用法： 命令行入口有三个文件，分别是ztcli, ztc"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_create-library-1325.html",
+    "md_file": "定制开发/extension-dev_create-library-1325.md",
+    "title": "增加新的类库",
+    "preview": "独立的类库文件和通常的php class没有任何区别，只要将其存放在lib目录下面，文件名为小写的类名，或者建立一个目录。 比如，新增一个image的类，可以存放在lib/image.class.php，也可以存放在lib/image/image.class.php。  注意：与其他的定制代码不同，类库是放在lib目录，而不是extension/custom目录。"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_custom-dev-1319.html",
+    "md_file": "定制开发/extension-dev_custom-dev-1319.md",
+    "title": "禅道二次开发简介",
+    "preview": "为了方便用户增加新的功能、修改现有代码或者进行第三方系统集成，禅道提供强大的扩展机制、全面的API接口以及命令行调用三种方式，满足企业用户的特色需求。  扩展机制：可以使用PHP、HTML、CSS或者JS代码来对现有的代码功能进行改动。作为开源软件，禅道用户可以参考系统已有的代码进行改造，更快上手。  API 接口：可以通过HTTP协议访问或者修改禅道的数据，和其他系统进行集成；   命令行调用："
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_dao-1332.html",
+    "md_file": "定制开发/extension-dev_dao-1332.md",
+    "title": "数据库访问类dao",
+    "preview": "####  一、关于DAO的说明   zentaoPHP并没有试着去实现ORM或者ActiveRecord这样的概念。因为我们相信，框架要留给开发人员足够的自由发挥的空间，而不是所有的都要包办。所以框架里面提供了一个简单方便的数据库访问对象类DAO。并且我们在封装DAO的时候尽可能的兼容标准的sql写法。   DAO类的定义在lib下面的dao.class.php中。框架在加载的时候，会自动生成$"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_ext-control-1333.html",
+    "md_file": "定制开发/extension-dev_ext-control-1333.md",
+    "title": "对控制层(control/zen)扩展",
+    "preview": "## 一、控制层control  对现有模块的control层的扩展有两种，一种是覆盖现有的方法，一种是增加新的方法。下面我们来看下如何进行扩展。   #####  文件命名规则   无论是覆盖现有的方法，还是新增方法，扩展文件都是以方法名为名，保存到ext/control目录下面。文件名都是小写。   比如以user模块为例，我们想重新定义它的注册逻辑，只需要在extension/custom/"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_ext-css-js-1336.html",
+    "md_file": "定制开发/extension-dev_ext-css-js-1336.md",
+    "title": "对样式表CSS和JavaScript进行扩展",
+    "preview": "####  一、样式表的扩展   如果相对某一个页面的样式进行修改，可以有两种方法。一种就是通过前面所讲的视图文件的扩展来进行。还有一种方法就是单独为这个页面定义样式。比如我想对bug模块的create页面进行样式的重新定义，可以这样定义：   在extension/custom/bug/ext/css/下面创建create目录，然后在下面创建一个css文件名，在里面定义自己的样式就可以了。  框"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_ext-lang-config-1337.html",
+    "md_file": "定制开发/extension-dev_ext-lang-config-1337.md",
+    "title": "对多语言和配置进行扩展",
+    "preview": "####  一、语言的扩展   zentaoPHP框架把所有页面提示都已经抽象成语言配置，可以通过对语言的重定义来实现对程序的定制修改。   语言的扩展文件存放在ext/lang/目录下面。按照不同的语言建立相应的目录，比如zh-cn下面，可以有多个文件，zentaoPHP框架会自动加载该目录下面所有以.php结尾的文件。   比如扩展bug模块的语言文件，可以建立extension/custom"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_ext-model-1334.html",
+    "md_file": "定制开发/extension-dev_ext-model-1334.md",
+    "title": "对模型层(model/tao)扩展",
+    "preview": "## 一、模型层 model  model为模型方法，主要用来处理各种数据的查询、更新。model的扩展分为三种方式，一种是直接新增或者覆盖方法，一种是通过钩子来实现，第三种则是完全定义一个新的类，下面分别来讲述下各自实现的机制。   #####  直接新增或者覆盖方法  不管是新增方法还是覆盖现有的方法，都是在extension/custom目录下创建该模块目录，并在ext/model/目录下面"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_ext-ui-1335.html",
+    "md_file": "定制开发/extension-dev_ext-ui-1335.md",
+    "title": "对视图层(ui)扩展",
+    "preview": "视图文件的扩展分为两种方式，一种是完全覆盖，第二种是通过钩子机制来扩展。   ####  一、完全覆盖   视图文件的覆盖可以通过完全覆盖的方式来重新定义。比如我对bug模块的create页面进行扩展。原来的视图文件是存放在module/bug/ui/create.html.php。如果需要对其进行扩展，只需要将这个create.html.php拷贝到extension/custom/bug/ex"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_extension-summary-1322.html",
+    "md_file": "定制开发/extension-dev_extension-summary-1322.md",
+    "title": "禅道扩展机制简介",
+    "preview": "###  背景介绍   禅道软件的定制开发通常需要对已有代码进行修改或增加新功能。市面上大多数开源软件在进行二次开发后只能停留在特定版本,升级时往往需要重新开发。虽然像WordPress、Drupal等知名软件开发了Hook机制来解决这个问题,但这种基于事件的扩展方式只能进行局部修改,难以实现深度定制。   ###  禅道的解决方案   为解决这个问题,禅道在设计时特别注重框架的扩展性,实现了一套"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_new-basic-1331.html",
+    "md_file": "定制开发/extension-dev_new-basic-1331.md",
+    "title": "基本的代码组织",
+    "preview": "新增独立模块跟禅道官方模块的写法是一致的，我们可以通过查看禅道的module目录中任意模块了解基本的代码编写逻辑。禅道模块的分层组织基本上都是由以下几个文件和目录构成的：   1. control.php 控制层，页面访问的入口代码和逻辑  2. zen.php      控制子层，control层的内部代码会放在zen层  3. model.php  模型层，主要是对数据库的操作代码  4. t"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_new-control-1326.html",
+    "md_file": "定制开发/extension-dev_new-control-1326.md",
+    "title": "新增控制层(control/zen)",
+    "preview": "## 一、控制层 control  文件位置 新增模块的控制层首先需要在 extension/custom/xxx 目录下新增一个 control.php 文件。  以oa模块为例，需要新增一个 extension/custom/oa/control.php 文件。   代码编写  在control.php文件里声明一个与模块同名的类，继承自control类。control类是禅道框架的基础类，可"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_new-css-js-1330.html",
+    "md_file": "定制开发/extension-dev_new-css-js-1330.md",
+    "title": "新增前端样式CSS和JavaScript",
+    "preview": "####  一、样式表的扩展   如果相对某一个页面的样式进行修改，可以有两种方法。一种就是通过前面所讲的视图文件的扩展来进行。还有一种方法就是单独为这个页面定义样式。比如我想对oa模块的create页面进行样式的重新定义，可以这样定义：   在extension/custom/oa/css/下面创建create.ui.js，在里面定义自己的样式就可以了。  框架在加载create方法的时候，会把"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_new-lang-1329.html",
+    "md_file": "定制开发/extension-dev_new-lang-1329.md",
+    "title": "新增语言项lang和配置项config",
+    "preview": "####  一、新增语言项   禅道将所有页面显示的内容都已经抽象成语言配置，可以通过对语言的定义来实现对程序的定制修改。   我们显示一个文字内容，比如 “创建待办” 我们可以在语言项定义   ``` $lang->oa->createTodo = '创建待办'; ```   语言的扩展文件存放在lang/目录下面。按照不同的语言建立相应的文件，中文简体对应的文件名是 zh-cn.php。   "
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_new-model-1327.html",
+    "md_file": "定制开发/extension-dev_new-model-1327.md",
+    "title": "新增模型层(model/tao)",
+    "preview": "## 一、模型层 model 文件位置  禅道的模型层在model.php文件里编写，主要用来处理各种数据的查询、更新。   还是以oa模块为例，新增一个extension/custom/oa/model.php文件。  代码编写   在model.php文件里创建一个名称为：模块名+'Model' 的类，继承自model类。model类是禅道框架的基础类，可以在framework/model.c"
+  },
+  {
+    "section": "定制开发",
+    "file": "extension-dev_new-view-1328.html",
+    "md_file": "定制开发/extension-dev_new-view-1328.md",
+    "title": "新增视图层(view/ui)",
+    "preview": "一、文件位置  禅道的视图层在ui目录里编写，18系列版本的视图文件在view目录里，20版本的代码都是在ui目录进行编写。   还是以oa模块为例，新增一个browse页面，需要增加一个extension/custom/oa/ui/browse.html.php文件。   二、代码编写  之前禅道的视图文件直接使用PHP+原始HTML拼接进行渲染的，代码封装度不够、很多组件无法复用，导致开发效率"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1060.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1060.md",
+    "title": "关闭需求",
+    "preview": "POST  /stories/id/close   ##  关闭需求   ###  请求URL  https://xxx.com/api.php/v1/stories/id/close   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###   ###  请求体  |   名称   类型   必填"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1120.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1120.md",
+    "title": "确认Bug",
+    "preview": "POST  /bugs/id/confirm   ##  确认Bug   ###  请求URL  https://xxx.com/api.php/v1/bugs/id/confirm   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1121.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1121.md",
+    "title": "关闭Bug",
+    "preview": "POST  /bugs/id/close   ##  关闭Bug   ###  请求URL  https://xxx.com/api.php/v1/bugs/id/close  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   c"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1142.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1142.md",
+    "title": "激活Bug",
+    "preview": "POST  /bugs/id/active   ##  激活Bug   ###  请求URL  https://xxx.com/api.php/v1/bugs/id/active   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  | "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_116.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_116.md",
+    "title": "示例：如何修改禅道的语言提示？",
+    "preview": "下面来看具体的例子吧，以修改bug的优先级列表提示为例：   1. 在module/bug/下面创建ext/lang/zh-cn/目录，这里面的zh-cn，可以根据实际情况换成相应的语言，比如en, zh-tw。  2. 在这个目录下面创建一个abc.php，注意，abc的名字是可以随便定义的。  3. 打开这个文件，重新定义优先级的提示：  ``` unset($lang->bug->priLi"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1164.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1164.md",
+    "title": "18系列菜单登记和权限维护",
+    "preview": "本文主要讲解在禅道18系列及以上版本中，菜单登记、权限维护等常见问题。  ### 1、如何在禅道中登记一个菜单？ 模块：common  目录：lang  左侧主导航：   $lang->mainNav->$menuName  顶部一级导航：$lang->$moduleName->menu->$menuName  顶部二级导航：$lang->$moduleName->menu->$menuName["
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1181.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1181.md",
+    "title": "解决Bug",
+    "preview": "POST  /bugs/id/resolve   ##  解决Bug   ###  请求URL  https://xxx.com/api.php/v1/bugs/id/resolve   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1198.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1198.md",
+    "title": "添加任务日志",
+    "preview": "POST  /tasks/id/estimate   ##   ##  添加任务日志  ###  请求URL  https://xxx.com/api.php/v1/tasks/id/estimate   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  对于禅道开源版20.7（企业"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1199.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1199.md",
+    "title": "获取任务日志",
+    "preview": "GET  /tasks/id/estimate   ##  获取任务日志列表   ###  请求URL  https://xxx.com/api.php/v1/tasks/id/estimate   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1200.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1200.md",
+    "title": "关闭任务",
+    "preview": "POST  /tasks/id/close   ##  继续任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id/close  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1266.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1266.md",
+    "title": "获取工单列表",
+    "preview": "GET  /tickets   ##  获取工单列表   ###  请求URL  https://xxx.com/api.php/v1/tickets   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求参数  |   名称   类型   必填   描述  |  browseType  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1267.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1267.md",
+    "title": "获取工单详情",
+    "preview": "GET  /tickets/id   ##  获取工单详情   ###  请求URL  https://xxx.com/api.php/v1/tickets/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###   ###  请求响应  |   名称   类型   必填   描述  |  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1268.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1268.md",
+    "title": "修改工单",
+    "preview": "PUT  /tickets/id   ##  修改工单   ###  请求URL  https://xxx.com/api.php/v1/tickets/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |  product i"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1269.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1269.md",
+    "title": "创建工单",
+    "preview": "POST  /tickets   ##  创建工单   ###  请求URL  https://xxx.com/api.php/v1/tickets  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |  product int  是 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1270.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1270.md",
+    "title": "删除工单",
+    "preview": "DELETE  /tickets/id   ##  删除工单   ###  请求URL  https://xxx.com/api.php/v1/tickets/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |  messag"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_1397.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_1397.md",
+    "title": "配置使用与常见问题",
+    "preview": "### 一、禅道版本要求 禅道 RESTful API v1 在禅道开源版 16.5 版本之后新增到禅道框架中，API 入口文件位于【禅道项目目录/www/api.php】，API 的路由解析规则位于【禅道项目目录/config/routes.php】  ###  二、使用说明与示例   ####   2.1以获取1号产品的bug列表举例  （1）保证账号有查看1号产品的bug访问权限（权限调整可"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_142.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_142.md",
+    "title": "示例：创建bug时可以设置优先级字段",
+    "preview": "这个例子用来向大家展示如何使用禅道的扩展机制来对禅道进行各种定制，而不用担心后续升级之后被覆盖。  目标：在创建bug的时候，可以直接设置优先级字段。  ####  一、创建目录   1. 在module/bug/目录下面建立ext/view目录。  2. 将module/bug/view/create.html.php拷贝到ext/view/目录下面，仍然是create.html.php  3."
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_144.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_144.md",
+    "title": "禅道项目管理软件打包规范1.1版本",
+    "preview": "大家在二次开发过程中，好的功能也可以打包成插件和大家进行分享。我们整理了禅道项目管理软件打包规范。   ####  一、可以扩展的元素：   |    目录    说明  |    bin    比如新增的命令行脚本程序。  |    config    比如可以对配置文件进行修改。  |    db    db目录下面可以存放install.sql和uninstall.sql，分别对应安装时需要"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_147.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_147.md",
+    "title": "使用在线扩展编辑器",
+    "preview": "禅道还提供了web方式的代码扩展编辑器，可以使用超级管理员登录禅道，对禅道进行二次扩展：   #### 一、访问入口 禅道扩展编辑就是后台模块下的扩展里。  点击进入后台--二次开发--编辑器，首先看到的是可扩展的模块列表。  点击想要扩展的模块链接，右侧就会出现该模块所有可扩展的文件，包括control.php和model.php的方法。  这些文件是有排列顺序的，自上而下依次是：  model"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_155.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_155.md",
+    "title": "禅道的目录结构",
+    "preview": "了解了zentaoPHP框架的基本原理和二次开发机制之后，您对禅道项目管理软件的目录结构应该也比较熟悉了。   #### 一、顶级目录结构： |   ![](https://static.zentao.net/web/data/upload/20100827145439_81085.gif)  - bin目录是存放里禅道的一些命令行脚本；  - config下面存放了禅道运行的主配置文件和数据库配"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_156.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_156.md",
+    "title": "找到要修改的文件",
+    "preview": "要想对禅道进行修改，就必须知道对应的代码在什么地方。在了解了禅道的目录结构之后，我们来看下禅道的请求是如何对应到代码的。   #### 一、control方法的定位 control方法是每一个页面的入口，顺藤摸瓜，让我们先来看个例子：bug-browse-1.html 或者是/?m=bug&f=browse&productID=1&t=html。这里面有什么玄机呢？让我们来揭晓。  bug-bro"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_157.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_157.md",
+    "title": "禅道的数据库结构",
+    "preview": "禅道的数据库命名都比较简明扼要，从字面意思应该都可以猜出来表的用途。如果还不是很清楚的话，可以到每个表对应的模块下面的语言文件里面查找。  最新版本可以在  禅道 后台---二次开发---数据库 中查看相应的表介绍。   #### 一、我的地盘相关的表 - zt_todo，待办事宜表。  #### 二、产品相关的表 - zt_product，记录了产品相关的信息。  - zt_productpla"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_158.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_158.md",
+    "title": "公用模块--common",
+    "preview": "common模块在禅道中是比较特殊的一个模块，禅道里面的众多公用功能都是由common来实现的。  - common/model.php里面，提供了其他模块都有可能用到的一些方法。比如权限检查，菜单打印等功能。  - common/view目录下面，则是提供了公用的模板。比如公用的header.html.php，footer.html.php等。还包含了各种jquery插件的初始化代码模板。比如c"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_225.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_225.md",
+    "title": "二次开发机制",
+    "preview": "禅道项目管理软件是使用我们自主开发的zentaoPHP框架开发的。zentaoPHP框架实现了功能强大的扩展机制、API调用机制和命令行机制。您可以使用不同的机制来实现对禅道功能的修改、扩展。也可以和其他的系统进行集成，也可以部署各种自动化脚本对禅道进行各种操作。   因此请您仔细阅读下面的文档，以充分了解zentaoPHP框架的二次开发机制：    1. zentaoPHP框架基本使用手册：ht"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_2309.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_2309.md",
+    "title": "APIv2.0使用教程",
+    "preview": "禅道RESTful APIv2.0提供用户认证和业务数据处理的相关接口，涵盖绝大部分禅道的常用功能，遵循HTTP RESTful风格。   禅道API在进行业务数据的获取或者处理的时候，需要首先获取认证token，然后再后续请求的header里携带token进行请求。   以创建项目为例：  1. 获取token   参考Token的API文档，发送POST请求：   ![](https://st"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_345.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_345.md",
+    "title": "二次开发编辑器和翻译功能限制使用说明",
+    "preview": "说明：禅道11.7版本开始，因为安全因素考虑，把二次开发的编辑器和翻译功能拿出来做为插件。 大家需要使用，可以到禅道官网--插件里下载安装。 禅道插件下载地址：http://www.zentao.net/extension-browse.html (http://www.zentao.net/extension-browse.html)  禅道从11.6版本开始，后台--二次开发--编辑器和后台-"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_494.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_494.md",
+    "title": "调用SDK示例",
+    "preview": "#### 一、使用说明 本SDK文件中的方法调用，适用于禅道12版本（禅道开源版12.5.3、禅道企业版 4.1.3及以下版本适用）。 在其它PHP框架中调用此SDK文件，只需要把SDK文件放置在框架目录下，分配目录和本文件权限，能够url正常访问到即可。  ####   ####   #### 二、配置参数 以开源版一键安装包为例，找到xampp\\zentao\\sdk\\php\\zentao.ph"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_664.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_664.md",
+    "title": "获取Token",
+    "preview": "POST  /tokens    ##  获取Token   ###  请求URL  https://xxx.com/api.php/v1/tokens  ###  请求体  |   名称   类型   必填   描述  |   account   string   是   登录名  |   password   string   是   密码   ###  请求示例   ``` {\"accoun"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_665.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_665.md",
+    "title": "获取我的个人信息",
+    "preview": "GET  /user   ##  获取我的个人信息   ###  请求URL   https://xxx.com/api.php/v1/user   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   profile   obje"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_666.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_666.md",
+    "title": "获取用户列表",
+    "preview": "GET  /users   ##  获取用户列表   ###  请求URL  https://xxx.com/api.php/v1/users   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求参数  |   名称   类型   必填   描述  |   browse   string"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_667.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_667.md",
+    "title": "获取用户信息",
+    "preview": "GET  /users/id   ##  获取用户信息   ###  请求URL  https://xxx.com/api.php/v1/users/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   int "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_668.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_668.md",
+    "title": "修改用户信息",
+    "preview": "PUT  /users/id   ##  修改用户信息   ###  请求URL  https://xxx.com/api.php/v1/users/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证  |   ###  请求体  |   名称   类型   必填   描述  |   dept   int   否 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_669.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_669.md",
+    "title": "删除用户",
+    "preview": "DELETE  /users/id   ##  删除用户   ###  请求URL  https://xxx.com/api.php/v1/users/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   message "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_670.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_670.md",
+    "title": "获取项目集列表",
+    "preview": "GET  /programs   ##  获取项目集列表   ###  请求URL  https://xxx.com/api.php/v1/programs  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   访问凭证Token  |   ###  请求参数  |   名称   类型   必填   描述  |   order   S"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_671.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_671.md",
+    "title": "修改项目集",
+    "preview": "PUT  /programs/id   ##  修改项目集   ###  请求URL  https://xxx.com/api.php/v1/programs/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   name "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_672.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_672.md",
+    "title": "获取项目集详情",
+    "preview": "GET  /programs/id   ##  获取项目集详情   ###  请求URL  https://xxx.com/api.php/v1/programs/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_673.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_673.md",
+    "title": "删除项目集",
+    "preview": "DELETE  /programs/id   ##  删除项目集   ###  请求URL  https://xxx.com/api.php/v1/programs/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   m"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_674.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_674.md",
+    "title": "创建项目集",
+    "preview": "POST  /programs   ##  创建项目集   ###  请求URL   https://xxx.com/api.php/v1/programs   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   name   st"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_675.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_675.md",
+    "title": "获取产品列表",
+    "preview": "GET  /products   ##  获取产品列表   ###  请求URL  https://xxx.com/api.php/v1/products   ###  请求头  |   名称   类型   必填   描述  |   Token   String   否   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   products "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_676.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_676.md",
+    "title": "创建产品",
+    "preview": "POST  /products   ##  创建产品   ###  请求URL  https://xxx.com/api.php/v1/products   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   name   stri"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_677.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_677.md",
+    "title": "获取产品详情",
+    "preview": "GET  /products/id   ##  获取产品详情   ###  请求URL  https://xxx.com/api.php/v1/products/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_678.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_678.md",
+    "title": "编辑产品",
+    "preview": "PUT  /product/id   ##  编辑产品   ###  请求头  https://xxx.com/api.php/v1/product/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   否   访问凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   name   str"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_679.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_679.md",
+    "title": "删除产品",
+    "preview": "DELETE  /products/id   ##  删除产品   ###  请求URL  https://xxx.com/api.php/v1/products/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   me"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_68.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_68.md",
+    "title": "12系列菜单登记和权限维护",
+    "preview": "扩展禅道遇到的一个问题就是如何将自己增加的功能登记到菜单中以及如何维护权限，本篇文章来讲述如何来实现这个功能。   ### 一、如何登记菜单  #### 1、菜单的组成 禅道的导航菜单分为三个部分，顶部菜单、模块菜单、功能菜单。   ![](https://static.zentao.net/web/data/upload/201412/f_d3943575c63dd277f1246ecb5180"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_680.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_680.md",
+    "title": "获取产品计划列表",
+    "preview": "GET  /products/id/plans   ##  获取产品计划列表   ###  请求URL  https://xxx.com/api.php/v1/products/id/plans   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_681.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_681.md",
+    "title": "创建计划",
+    "preview": "POST  /products/id/plans   ##  创建计划   ###  请求URL  https://xxx.com/api.php/v1/products/id/plans   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_682.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_682.md",
+    "title": "获取计划详情",
+    "preview": "GET  /productplans/id   ##  获取计划详情   ###  请求URL  https://xxx.com/api.php/v1/productplans/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_683.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_683.md",
+    "title": "修改计划",
+    "preview": "PUT  /productplans/id   ##  修改计划   ###  请求URL  https://xxx.com/api.php/v1/productplans/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  | "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_684.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_684.md",
+    "title": "删除计划",
+    "preview": "DELETE  /productsplan/id   ##  删除计划   ###  请求URL  https://xxx.com/api.php/v1/productsplan/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_685.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_685.md",
+    "title": "产品计划关联需求",
+    "preview": "POST  /productplans/id/linkstories   ##  产品计划关联需求   ###  请求URL  https://xxx.com/api.php/v1/productplans/id/linkstories   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_686.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_686.md",
+    "title": "产品计划取消关联需求",
+    "preview": "POST  /productplans/id/unlinkstories   ##  产品计划取消关联需求   ###  请求URL  https://xxx.com/api.php/v1/productplans/id/unlinkstories   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_687.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_687.md",
+    "title": "产品计划关联Bug",
+    "preview": "POST  /productplans/id/linkbugs   ##  产品计划关联Bug   ###  请求URL  https://xxx.com/api.php/v1/productplans/id/linkbugs   ###  请求体  |   名称   类型   必填   描述  |   bugs   array   是   关联的Bug ID，比如 [1, 2]   ###  请"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_688.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_688.md",
+    "title": "产品计划取消关联Bug",
+    "preview": "POST  /productplans/id/unlinkbugs   ##  产品计划取消关联Bug   ###  请求URL  https://xxx.com/api.php/v1/productplans/id/unlinkbugs  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_689.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_689.md",
+    "title": "获取产品发布列表",
+    "preview": "GET  /products/id/releases   ##  获取产品发布列表   ###  请求URL  https://xxx.com/api.php/v1/products/id/releases   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_690.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_690.md",
+    "title": "获取项目发布列表",
+    "preview": "GET  /projects/id/releases   ##  获取项目发布列表   ###  请求URL  https://xxx.com/api.php/v1/projects/id/releases  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_691.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_691.md",
+    "title": "获取产品需求列表",
+    "preview": "GET  /products/id/stories   ##  获取产品需求列表   ###  请求URL  https://xxx.com/api.php/v1/products/id/stories  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求参数  |   page   St"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_692.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_692.md",
+    "title": "获取项目需求列表",
+    "preview": "GET  /projects/id/stories   ##  获取项目需求列表   ###  请求URL  https://xxx.com/api.php/v1/projects/id/stories   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_693.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_693.md",
+    "title": "获取执行需求列表",
+    "preview": "GET  /executions/id/stories   ##  获取执行需求列表   ###  请求URL  https://xxx.com/api.php/v1/executions/id/stories   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_694.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_694.md",
+    "title": "创建需求",
+    "preview": "POST  /stories   ##  创建需求   ###  请求URL  https://xxx.com/api.php/v1/stories   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   title   strin"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_695.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_695.md",
+    "title": "获取需求详情",
+    "preview": "GET  /stories/id   ##  获取需求详情   ###  请求URL  https://xxx.com/api.php/v1/stories/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_696.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_696.md",
+    "title": "变更需求",
+    "preview": "POST  /stories/id/change   ##  变更需求   ###  请求URL  https://xxx.com/api.php/v1/stories/id/change   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_697.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_697.md",
+    "title": "修改需求其他字段",
+    "preview": "PUT  /stories/id   ##  修改需求其他字段   ###  请求URL  https://xxx.com/api.php/v1/stories/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   modu"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_698.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_698.md",
+    "title": "删除需求",
+    "preview": "DELETE  /stories/id   ##  删除需求   ###  请求URL  https://xxx.com/api.php/v1/stories/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   mess"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_699.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_699.md",
+    "title": "获取项目列表",
+    "preview": "GET  /projects   ##  获取项目列表   ###  请求URL  https://xxx.com/api.php/v1/projects   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求参数  |   名称   类型   必填   描述  |   page   St"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_700.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_700.md",
+    "title": "创建项目",
+    "preview": "POST  /projects   ##  创建项目   ###  请求URL  https://xxx.com/api.php/v1/projects   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   name   stri"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_701.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_701.md",
+    "title": "获取项目详情",
+    "preview": "GET  /projects/id   ##  获取项目详情   ###  请求URL  https://xxx.com/api.php/v1/projects/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_702.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_702.md",
+    "title": "修改项目",
+    "preview": "PUT  /projects/id   ##  修改项目   ###  请求URL  https://xxx.com/api.php/v1/projects/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   name  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_703.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_703.md",
+    "title": "删除项目",
+    "preview": "DELETE  /projects/id   ##  删除项目   ###  请求URL  https://xxx.com/api.php/v1/projects/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   mes"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_704.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_704.md",
+    "title": "获取项目版本列表",
+    "preview": "GET  /projects/id/builds   ##  获取项目版本列表   ###  请求URL  https://xxx.com/api.php/v1/projects/id/builds  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_705.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_705.md",
+    "title": "获取执行版本列表",
+    "preview": "GET  /executions/id/builds   ##  获取执行版本列表   ###  请求URL  https://xxx.com/api.php/v1/executions/id/builds   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_706.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_706.md",
+    "title": "创建版本",
+    "preview": "POST  /projects/id/builds   ##  创建版本   ###  请求URL  https://xxx.com/api.php/v1/projects/id/builds   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_707.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_707.md",
+    "title": "获取版本详情",
+    "preview": "GET  /builds/id   ##  获取版本详情   ###  请求URL  https://xxx.com/api.php/v1/builds/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   in"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_708.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_708.md",
+    "title": "修改版本",
+    "preview": "PUT  /builds/id   ##  修改版本   ###  请求URL  https://xxx.com/api.php/v1/builds/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   int "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_709.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_709.md",
+    "title": "删除版本",
+    "preview": "DELETE  /builds/id   ##  删除版本   ###  请求URL  https://xxx.com/api.php/v1/builds/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   in"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_710.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_710.md",
+    "title": "获取项目的执行列表",
+    "preview": "GET  /projects/id/executions   ##  获取项目的执行列表   ###  请求URL  https://xxx.com/api.php/v1/projects/id/executions   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_711.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_711.md",
+    "title": "创建执行",
+    "preview": "POST  /projects/id/executions   ##  创建执行   ###  请求URL  https://xxx.com/api.php/v1/projects/id/executions   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证  |   ###  请求体  |   名称   类型   必"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_712.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_712.md",
+    "title": "查看执行详情",
+    "preview": "GET  /executions/id   ##  查看执行详情   ###  请求URL  https://xxx.com/api.php/v1/executions/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_713.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_713.md",
+    "title": "修改执行",
+    "preview": "PUT  /executions/id   ##  修改执行   ###  请求URL  https://xxx.com/api.php/v1/executions/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证  |   ###  请求体  |   名称   类型   必填   描述  |   project"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_714.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_714.md",
+    "title": "删除执行",
+    "preview": "DELETE  /executions/id   ##  删除执行   ###  请求URL  https://xxx.com/api.php/v1/executions/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  | "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_715.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_715.md",
+    "title": "获取执行任务列表",
+    "preview": "GET  /executions/id/tasks   ##  获取执行任务列表   ###  请求URL  https://xxx.com/api.php/v1/executions/id/tasks  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_716.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_716.md",
+    "title": "创建任务",
+    "preview": "POST  /executions/id/tasks   ##  创建任务   ###  请求URL  https://xxx.com/api.php/v1/executions/id/tasks   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_717.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_717.md",
+    "title": "获取任务详情",
+    "preview": "GET  /tasks/id   ##  获取任务详情   ###  请求URL  https://xxx.com/api.php/v1/tasks/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   int "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_718.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_718.md",
+    "title": "修改任务",
+    "preview": "PUT  /tasks/id   ##  修改任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   module   int"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_719.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_719.md",
+    "title": "删除任务",
+    "preview": "DELETE  /tasks/id   ##  删除任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   message "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_720.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_720.md",
+    "title": "获取产品Bug列表",
+    "preview": "GET  /products/id/bugs   ##  获取产品Bug列表   ###  请求URL  https://xxx.com/api.php/v1/products/id/bugs  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_721.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_721.md",
+    "title": "创建Bug",
+    "preview": "POST  /products/id/bugs   ##  创建Bug   ###  请求URL  https://xxx.com/api.php/v1/products/id/bugs   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_722.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_722.md",
+    "title": "获取Bug详情",
+    "preview": "GET  /bugs/id   ##  获取Bug详情   ###  请求URL  https://xxx.com/api.php/v1/bugs/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   id   int  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_723.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_723.md",
+    "title": "修改Bug",
+    "preview": "PUT  /bugs/id   ##  修改Bug   ###  请求URL  https://xxx.com/api.php/v1/bugs/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   branch   int "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_724.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_724.md",
+    "title": "删除Bug",
+    "preview": "DELETE  /bugs/id   ##  删除Bug   ###  请求URL  https://xxx.com/api.php/v1/bugs/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   message   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_725.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_725.md",
+    "title": "获取产品用例列表",
+    "preview": "GET  /products/id/testcases   ##  获取产品用例列表   ###  请求URL  https://xxx.com/api.php/v1/products/id/testcases   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_726.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_726.md",
+    "title": "创建用例",
+    "preview": "POST  /products/id/testcases   ##  创建用例   ###  请求URL  https://xxx.com/api.php/v1/products/id/testcases   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_727.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_727.md",
+    "title": "获取用例详情",
+    "preview": "GET  /testcases/id   ##  获取用例详情   ###  请求URL  https://xxx.com/api.php/v1/testcases/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   i"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_728.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_728.md",
+    "title": "修改用例",
+    "preview": "PUT  /testcases/id   ##  修改用例   ###  请求URL  https://xxx.com/api.php/v1/testcases/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   bran"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_729.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_729.md",
+    "title": "删除用例",
+    "preview": "DELETE  /testcases/id   ##  删除用例   ###  请求URL  https://xxx.com/api.php/v1/testcases/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_730.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_730.md",
+    "title": "获取测试单列表",
+    "preview": "GET  /testtasks   ##  获取测试单列表   ###  请求URL  https://xxx.com/api.php/v1/testtasks   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求参数  |   名称   类型   必填   描述  |   page  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_731.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_731.md",
+    "title": "获取项目的测试单",
+    "preview": "GET  /projects/id/testtasks   ##  获取项目的测试单   ###  请求URL  https://xxx.com/api.php/v1/projects/id/testtasks   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_732.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_732.md",
+    "title": "获取测试单详情",
+    "preview": "GET  /testtasks/id   ##  获取测试单详情   ###  请求URL  https://xxx.com/api.php/v1/testtasks/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_838.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_838.md",
+    "title": "创建用户",
+    "preview": "POST  /users   ##  创建用户   ###  请求URL  https://xxx.com/api.php/v1/users  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token   ###  请求体  |   名称   类型   必填   描述  |  account   string   是  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_840.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_840.md",
+    "title": "创建反馈",
+    "preview": "POST  /feedbacks   ##  创建反馈   ###  请求URL  https://xxx.com/api.php/v1/feedbacks   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |  product in"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_841.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_841.md",
+    "title": "指派反馈",
+    "preview": "POST  /feedbacks/id/assign   ##  指派反馈   ###  请求URL  https://xxx.com/api.php/v1/feedbacks/id/assign  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_842.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_842.md",
+    "title": "关闭反馈",
+    "preview": "POST  /feedbacks/id/close   ##  关闭反馈   ###  请求URL  https://xxx.com/api.php/v1/feedbacks/id/close  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_843.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_843.md",
+    "title": "删除反馈",
+    "preview": "DELETE  /feedbacks/id   ##  删除反馈   ###  请求URL  https://xxx.com/api.php/v1/feedbacks/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |  me"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_844.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_844.md",
+    "title": "修改反馈",
+    "preview": "PUT  /feedbacks/id   ##  修改反馈   ###  请求URL  https://xxx.com/api.php/v1/feedbacks/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |  produc"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_845.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_845.md",
+    "title": "获取反馈详情",
+    "preview": "GET  /feedbacks/id   ##  获取反馈详情   ###  请求URL  https://xxx.com/api.php/v1/feedbacks/id  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求响应  |   名称   类型   必填   描述  |  id "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_846.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_846.md",
+    "title": "获取反馈列表",
+    "preview": "GET  /feedbacks   ##  获取反馈列表   ###  请求URL  https://xxx.com/api.php/v1/feedbacks  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |  solution  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_962.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_962.md",
+    "title": "执行用例",
+    "preview": "POST  /testcases/id/results   ##  执行用例   ###  请求URL  https://xxx.com/api.php/v1/testcases/id/results   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求参数  |   名称   类型  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_964.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_964.md",
+    "title": "获取部门列表",
+    "preview": "GET  /departments   ##  获取部门列表   ###  请求URL  https://xxx.com/api.php/v1/departments   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   访问凭证Token  |   ### 请求响应 |   名称   类型   必填   描述  |   depar"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_965.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_965.md",
+    "title": "获取部门详情",
+    "preview": "GET  /departments/id   ##  获取部门详情   ###  请求URL  https://xxx.com/api.php/v1/departments/id   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   访问凭证Token  |   ### 请求响应 |   名称   类型   必填   描述  |  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_967.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_967.md",
+    "title": "开始任务",
+    "preview": "POST  /tasks/id/start   ##  开始任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id/start   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_968.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_968.md",
+    "title": "暂停任务",
+    "preview": "POST  /tasks/id/pause   ##  暂停任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id/pause  ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_969.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_969.md",
+    "title": "继续任务",
+    "preview": "POST  /tasks/id/restart   ##  继续任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id/restart   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_970.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_970.md",
+    "title": "完成任务",
+    "preview": "POST  /tasks/id/finish   ##  完成任务   ###  请求URL  https://xxx.com/api.php/v1/tasks/id/finish   ###  请求头  |   名称   类型   必填   描述  |   Token   String   是   认证凭证Token  |   ###  请求体  |   名称   类型   必填   描述  |"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_bug-create-388.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_bug-create-388.md",
+    "title": "添加单个Bug",
+    "preview": "|  方法说明  请求此方法，用于新增 Bug 反馈，新增 Bug 时可以绑定所属产品、项目、优先级等相关信息，并指派给某个用户。 |  使用示例  ``` public function addBug() {     include_once('../vendor/zentao/zentao.php');     $zentao = new \\zentao();     $params = ar"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_bug-create-params-387.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_bug-create-params-387.md",
+    "title": "添加单个Bug可选信息",
+    "preview": "|  方法说明  请求此方法，用于为指定的产品添加 Bug 之前，获取添加 Bug 时可能需要用到的一些相关信息。 |  使用示例  ``` public function getBugCreateParams() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $pa"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_bug-getlist-386.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_bug-getlist-386.md",
+    "title": "获取Bug列表",
+    "preview": "|  方法说明  请求此方法，可以获取不同产品下的 Bug 列表，Bug 列表可以根据不同状态进行筛选。 |  使用示例  ``` public function getBugList() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $params      = a"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_bug-resovle-390.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_bug-resovle-390.md",
+    "title": "解决单个Bug",
+    "preview": "|  方法说明  请求此方法，用于确认一个 Bug 已解决，同时为其绑定解决方案、解决版本、解决日期等相关信息。 |  注意点  注意点一：如果需要新增所属版本，需要额外添加三个参数，示例：'buildProject' => 1，'buildName' => '版本7.2.4', createBuild' => 1，分别代表选择哪个项目（ 项目ID ）、新增版本名称、确认创建。  注意点二：如果解"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_bug-resovle-params-389.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_bug-resovle-params-389.md",
+    "title": "解决单个Bug可选信息",
+    "preview": "|  方法说明  请求此方法，可以获取当前 Bug 详细信息以及确认 Bug 解决时可能用到的信息。 |  使用示例  ``` public function getBugResolveParams() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $params  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_department-batchadd-371.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_department-batchadd-371.md",
+    "title": "批量添加部门",
+    "preview": "|  方法说明  请求此方法，可以批量添加部门。 |  使用示例    ``` public function addDept() {     include_once('../vendor/zentao/zentao.php');     $zentao = new \\zentao();     $params = array(         'parentDeptID' => '1',   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_department-list-370.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_department-list-370.md",
+    "title": "获取部门列表",
+    "preview": "|  方法说明  请求此方法，可以获取当前已添加部门列表数据，根据部门列表数据，后续可用于添加下级部门。 |  使用示例    ``` public function getDeptList()  {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $params     "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_product-create-377.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_product-create-377.md",
+    "title": "添加单个产品",
+    "preview": "|  方法说明  请求此方法，可以新增一个新产品，添加新产品时可以指定相关负责人，设置产品类型和访问权限。注意：假如参数 acl = custom ,可以额外传递参数,例如：'whitelist' => array(1, 2),添加白名单为权限分组列表中 ID。 |  使用示例    ``` public function addProduct() {     include_once('../v"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_product-getlist-375.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_product-getlist-375.md",
+    "title": "获取产品列表",
+    "preview": "|  方法说明 请求此方法，可以获取所有未关闭的产品详情信息和所有产品名称。  |  使用示例  ``` public function getProductList() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $extraFields = array('tit"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_product-params-376.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_product-params-376.md",
+    "title": "添加单个产品可选信息",
+    "preview": "|  方法说明  请求此方法，可以获取添加产品时所需要一些数据，例如产品线数据列表、产品负责人数据列表等数据，添加产品时，可以为其绑定这些信息。 |  使用示例  ``` public function getProductCreateParams() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_project-create-380.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_project-create-380.md",
+    "title": "添加单个项目",
+    "preview": "|  方法说明  此方法用于新增一个新项目，添加新项目时可以指定相关负责人，设置产品类型和访问权限。 |  注意点  注意点一：假如 acl = custom ，可额外传递参数，例如：'whitelist' => array(1, 2) ，代表访问白名单中的权限分组 ID。  注意点二：关联一个或者多个产品时额外传参字段，例如：'products' => array(4, 5)，代表同时关联产品 "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_project-getlist-378.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_project-getlist-378.md",
+    "title": "获取项目列表",
+    "preview": "|  方法说明 请求此方法，可以根据项目不同状态获取项目列表。 |  使用示例    ``` public function getProjectList() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $params      = array('status' ="
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_project-params-379.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_project-params-379.md",
+    "title": "添加单个项目可选信息",
+    "preview": "|  方法说明  请求此方法，获取正常状态产品列表信息，用于添加项目时为其绑定产品，从而用于项目与产品需求关联。还可获取权限分组列表，用于项目绑定访问控制权限。 |  使用示例    ``` public function getProjectCreateParams() {     include_once('../vendor/zentao/zentao.php');     $zentao "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_setting-369.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_setting-369.md",
+    "title": "配置使用与常见问题",
+    "preview": "### 一、配置参数 禅道 PHP-SDK 在开源版 12.0.1 版本之后新增到禅道框架目录中，禅道 PHP-SDK 文件位于【禅道项目目录/sdk/php/】下。使用 SDK （zentao.php）文件之前，需要在引用的禅道 SDK 文件中填写一些必要配置信息。禅道安装部署的域名、禅道用户账户、禅道用户密码、禅道配置的参数请求方式。  ``` const ztUrl        = 'ht"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_task-create-383.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_task-create-383.md",
+    "title": "添加单个任务",
+    "preview": "|  方法说明  请求此方法，用于新增一个任务，新增任务的同时可以绑定所属项目、指派给某用户、设定优先级等相关信息。 |  使用示例  ``` public function addTask() {     include_once('../vendor/zentao/zentao.php');     $zentao = new \\zentao();     $params = array(  "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_task-create-385.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_task-create-385.md",
+    "title": "完成单个任务",
+    "preview": "|  方法说明  请求此方法，用于确认某一个任务完成，可指派完成任务的用户、消耗时间等信息。 |  使用示例  ``` public function addTaskFinish() {     include_once('../vendor/zentao/zentao.php');     $zentao = new \\zentao();     $params = array(        "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_task-create-params-382.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_task-create-params-382.md",
+    "title": "添加单个任务可选信息",
+    "preview": "|  方法说明  添加单个任务时，可以先通过此方法，获取添加任务中所需要的相关信息。 |  使用示例  ``` public function getTaskCreateParams() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $params      = ar"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_task-finish-params-384.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_task-finish-params-384.md",
+    "title": "完成单个任务可选信息",
+    "preview": "|   方法说明  请求此方法，可以获取该任务的所属项目详情、任务详情、任务操作记录，同时获取用于指派完成的用户列表。 |  使用示例  ``` public function getTaskFinishParams() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_task-getlist-381.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_task-getlist-381.md",
+    "title": "获取任务列表",
+    "preview": "|  方法说明 调用此方法可以获取某个项目下不同状态的任务列表。注意：排序方式修改为降序排序，把 asc 修改为 desc 即可。 |  使用示例  ``` public function getTaskList() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $p"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_user-create-374.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_user-create-374.md",
+    "title": "添加单个用户",
+    "preview": "|  方法说明  请求此方法，用于新增一个新用户。新用户添加可以设定所属部门、职位、权限等信息。选填参数可以先不填。 |  使用示例  ``` public function addUser() {     include_once('../vendor/zentao/zentao.php');     $zentao = new zentao();     $params = array(   "
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_user-getlist-372.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_user-getlist-372.md",
+    "title": "获取用户列表",
+    "preview": "|  方法说明  请求此方法，可以根据不同的部门获取该部门下的用户列表信息。 |  使用示例  ``` public function getUserList() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $params      = array('deptID'"
+  },
+  {
+    "section": "禅道RESTfulAPIv1.0开发手册",
+    "file": "api_user-params-373.html",
+    "md_file": "禅道RESTfulAPIv1.0开发手册/api_user-params-373.md",
+    "title": "获得添加用户所用的参数列表",
+    "preview": "|  方法说明  添加用户时如果需要为新用户分配部门、职位、权限，请求该方法即可返回相关可用数据。 |  使用示例  ``` public function getUserCreateParams() {     include_once('../vendor/zentao/zentao.php');     $zentao      = new \\zentao();     $extraFiel"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-bugs-bugid-2244.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-bugs-bugid-2244.md",
+    "title": "删除Bug",
+    "preview": "DELETE/bugs/:bugID  ##  删除Bug   ### 请求URL https://xxx.com/api.php/v2/bugs/:bugID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(success 成功 | fa"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-builds-buildid-2257.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-builds-buildid-2257.md",
+    "title": "删除版本",
+    "preview": "DELETE/builds/:buildID  ##  删除版本   ### 请求URL https://xxx.com/api.php/v2/builds/:buildID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(success "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-epics-epicid-2246.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-epics-epicid-2246.md",
+    "title": "删除业务需求",
+    "preview": "DELETE/epics/:epicID  ##  删除业务需求   ### 请求URL https://xxx.com/api.php/v2/epics/:epicID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(success 成功"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-executions-executionid-2251.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-executions-executionid-2251.md",
+    "title": "删除执行",
+    "preview": "DELETE/executions/:executionID  ##  删除执行   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  str"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-feedbacks-feedbackid-2248.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-feedbacks-feedbackid-2248.md",
+    "title": "删除反馈",
+    "preview": "DELETE/feedbacks/:feedbackID  ##  删除反馈   ### 请求URL https://xxx.com/api.php/v2/feedbacks/:feedbackID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-files-fileid-2327.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-files-fileid-2327.md",
+    "title": "删除附件",
+    "preview": "DELETE/files/:fileID  ##  删除附件   ### 请求URL https://xxx.com/api.php/v2/files/:fileID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(success 成功 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-productplans-productplanid-2250.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-productplans-productplanid-2250.md",
+    "title": "删除产品计划",
+    "preview": "DELETE/productplans/:productplanID  ##  删除产品计划   ### 请求URL https://xxx.com/api.php/v2/productplans/:productplanID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  s"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-products-productid-2253.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-products-productid-2253.md",
+    "title": "删除产品",
+    "preview": "DELETE/products/:productID  ##  删除产品   ### 请求URL https://xxx.com/api.php/v2/products/:productID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态("
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-programs-programid-2254.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-programs-programid-2254.md",
+    "title": "删除项目集",
+    "preview": "DELETE/programs/:programID  ##  删除项目集   ### 请求URL https://xxx.com/api.php/v2/programs/:programID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-projects-projectid-2252.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-projects-projectid-2252.md",
+    "title": "删除项目",
+    "preview": "DELETE/projects/:projectID  ##  删除项目   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态("
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-releases-releasid-2258.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-releases-releasid-2258.md",
+    "title": "删除发布",
+    "preview": "DELETE/releases/:releasID  ##  删除发布   ### 请求URL https://xxx.com/api.php/v2/releases/:releasID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(su"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-requirements-requirementid-2247.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-requirements-requirementid-2247.md",
+    "title": "删除用户需求",
+    "preview": "DELETE/requirements/:requirementID  ##  删除用户需求   ### 请求URL https://xxx.com/api.php/v2/requirements/:requirementID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  s"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-stories-storyid-2245.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-stories-storyid-2245.md",
+    "title": "删除需求",
+    "preview": "DELETE/stories/:storyID  ##  删除需求   ### 请求URL https://xxx.com/api.php/v2/stories/:storyID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(succes"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-tasks-taskid-2242.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-tasks-taskid-2242.md",
+    "title": "删除任务",
+    "preview": "DELETE/tasks/:taskID  ##  删除任务   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(success 成功 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-testcases-testcasid-2243.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-testcases-testcasid-2243.md",
+    "title": "删除测试用例",
+    "preview": "DELETE/testcases/:testcasID  ##  删除测试用例   ### 请求URL https://xxx.com/api.php/v2/testcases/:testcasID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-testtasks-testtaskid-2256.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-testtasks-testtaskid-2256.md",
+    "title": "删除测试单",
+    "preview": "DELETE/testtasks/:testtaskID  ##  删除测试单   ### 请求URL https://xxx.com/api.php/v2/testtasks/:testtaskID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-tickets-ticketid-2249.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-tickets-ticketid-2249.md",
+    "title": "删除工单",
+    "preview": "DELETE/tickets/:ticketID  ##  删除工单   ### 请求URL https://xxx.com/api.php/v2/tickets/:ticketID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(succ"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_delete-users-userid-2255.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_delete-users-userid-2255.md",
+    "title": "删除用户",
+    "preview": "DELETE/users/:userID  ##  删除用户   ### 请求URL https://xxx.com/api.php/v2/users/:userID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求响应 |  名称  类型  描述 |  status  string  状态(success 成功 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-bugs-bugid-2197.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-bugs-bugid-2197.md",
+    "title": "获取Bug详情",
+    "preview": "GET/bugs/:bugID  ##  获取Bug详情   ### 请求URL https://xxx.com/api.php/v2/bugs/:bugID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |  status  str"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-epics-storyid-2182.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-epics-storyid-2182.md",
+    "title": "获取业务需求详情",
+    "preview": "GET/epics/:storyID  ##  获取业务需求详情   ### 请求URL https://xxx.com/api.php/v2/epics/:storyID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |  stat"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-2162.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-2162.md",
+    "title": "获取执行列表",
+    "preview": "GET/executions  ##  获取执行列表   ### 请求URL https://xxx.com/api.php/v2/executions  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  status  否  执行状态，默认是undone。(all 全部 | un"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-2164.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-2164.md",
+    "title": "获取执行详情",
+    "preview": "GET/executions/:executionID  ##  获取执行详情   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-bugs-2196.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-bugs-2196.md",
+    "title": "获取执行Bug列表",
+    "preview": "GET/executions/:executionID/bugs  ##  获取执行Bug列表   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID/bugs  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 | "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-builds-2233.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-builds-2233.md",
+    "title": "获取执行版本列表",
+    "preview": "GET/executions/:executionID/builds  ##  获取执行版本列表   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID/builds  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-stories-2174.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-stories-2174.md",
+    "title": "获取执行需求列表",
+    "preview": "GET/executions/:executionID/stories  ##  获取执行需求列表   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID/stories  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-tasks-2209.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-tasks-2209.md",
+    "title": "获取执行任务列表",
+    "preview": "GET/executions/:executionID/tasks  ##  获取执行任务列表   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID/tasks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-testcases-2205.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-testcases-2205.md",
+    "title": "获取执行测试用例列表",
+    "preview": "GET/executions/:executionID/testcases  ##  获取执行测试用例列表   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID/testcases  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-executions-executionid-testtasks-2238.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-executions-executionid-testtasks-2238.md",
+    "title": "获取执行测试单列表",
+    "preview": "GET/executions/:executionID/testtasks  ##  获取执行测试单列表   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID/testtasks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-feedbacks-feedbackid-2218.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-feedbacks-feedbackid-2218.md",
+    "title": "获取反馈详情",
+    "preview": "GET/feedbacks/:feedbackID  ##  获取反馈详情   ### 请求URL https://xxx.com/api.php/v2/feedbacks/:feedbackID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-productplans-planid-2168.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-productplans-planid-2168.md",
+    "title": "获取产品计划详情",
+    "preview": "GET/productplans/:planID  ##  获取产品计划详情   ### 请求URL https://xxx.com/api.php/v2/productplans/:planID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-2153.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-2153.md",
+    "title": "获取产品列表",
+    "preview": "GET/products  ##  获取产品列表   ### 请求URL https://xxx.com/api.php/v2/products  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  browseType  否  all 全部 | noclosed 未关闭 | clo"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-2155.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-2155.md",
+    "title": "获取产品详情",
+    "preview": "GET/products/:productID  ##  获取产品详情   ### 请求URL https://xxx.com/api.php/v2/products/:productID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-bugs-2194.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-bugs-2194.md",
+    "title": "获取产品Bug列表",
+    "preview": "GET  /products/:productID/bugs   ##  获取产品Bug列表   ###  请求URL  https://xxx.com/api.php/v2/products/:productID/bugs  ###  请求头  |   名称   类型   必填   描述  |   token   string   是   访问凭证Token   ###  请求参数  |   名"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-epics-2181.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-epics-2181.md",
+    "title": "获取产品业务需求列表",
+    "preview": "GET/products/:productID/epics  ##  获取产品业务需求列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/epics  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  brow"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-feedbacks-2217.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-feedbacks-2217.md",
+    "title": "获取产品反馈列表",
+    "preview": "GET/products/:productID/feedbacks  ##  获取产品反馈列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/feedbacks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-productplans-2167.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-productplans-2167.md",
+    "title": "获取产品计划列表",
+    "preview": "GET/products/:productID/productplans  ##  获取产品计划列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/productplans  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-releases-2241.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-releases-2241.md",
+    "title": "获取产品发布列表",
+    "preview": "GET/products/:productID/releases  ##  获取产品发布列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/releases  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ##"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-requirements-2188.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-requirements-2188.md",
+    "title": "获取产品用户需求列表",
+    "preview": "GET/products/:productID/requirements  ##  获取产品用户需求列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/requirements  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-stories-2172.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-stories-2172.md",
+    "title": "获取产品需求列表",
+    "preview": "GET/products/:productID/stories  ##  获取产品需求列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/stories  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  br"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-systems-2229.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-systems-2229.md",
+    "title": "获取产品应用列表",
+    "preview": "GET/products/:productID/systems  ##  获取产品应用列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/systems  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-testcases-2203.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-testcases-2203.md",
+    "title": "获取产品测试用例列表",
+    "preview": "GET/products/:productID/testcases  ##  获取产品测试用例列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/testcases  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-testtasks-2236.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-testtasks-2236.md",
+    "title": "获取产品测试单列表",
+    "preview": "GET/products/:productID/testtasks  ##  获取产品测试单列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/testtasks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-products-productid-tickets-2223.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-products-productid-tickets-2223.md",
+    "title": "获取产品工单列表",
+    "preview": "GET/products/:productID/tickets  ##  获取产品工单列表   ### 请求URL https://xxx.com/api.php/v2/products/:productID/tickets  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  br"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-programs-2149.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-programs-2149.md",
+    "title": "获取项目集列表",
+    "preview": "GET/programs  ##  获取项目集列表   ### 请求URL https://xxx.com/api.php/v2/programs  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  status  否  all 全部 | unclosed 未关闭 | wait 未"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-programs-programid-2150.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-programs-programid-2150.md",
+    "title": "获取项目集详情",
+    "preview": "GET/programs/:programID  ##  获取项目集详情   ### 请求URL https://xxx.com/api.php/v2/programs/:programID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-programs-programid-products-2154.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-programs-programid-products-2154.md",
+    "title": "获取项目集的产品列表",
+    "preview": "GET/programs/:programID/products  ##  获取项目集的产品列表   ### 请求URL https://xxx.com/api.php/v2/programs/:programID/products  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-programs-programid-projects-2159.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-programs-programid-projects-2159.md",
+    "title": "获取项目集的项目列表",
+    "preview": "GET/programs/:programID/projects  ##  获取项目集的项目列表   ### 请求URL https://xxx.com/api.php/v2/programs/:programID/projects  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-2158.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-2158.md",
+    "title": "获取项目列表",
+    "preview": "GET/projects  ##  获取项目列表   ### 请求URL https://xxx.com/api.php/v2/projects  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  browseType  否  项目状态，默认是undone。(all 全部 | un"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-projectid-bugs-2195.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-projectid-bugs-2195.md",
+    "title": "获取项目Bug列表",
+    "preview": "GET/projects/:projectID/bugs  ##  获取项目Bug列表   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID/bugs  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  browseT"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-projectid-builds-2232.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-projectid-builds-2232.md",
+    "title": "获取项目版本列表",
+    "preview": "GET/projects/:projectID/builds  ##  获取项目版本列表   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID/builds  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-projectid-executions-2163.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-projectid-executions-2163.md",
+    "title": "获取项目的执行列表",
+    "preview": "GET  /projects/:projectID/executions   ##  获取项目的执行列表   ###  请求URL  https://xxx.com/api.php/v2/projects/:projectID/executions  ###  请求头  |   名称   类型   必填   描述  |   token   string   是   访问凭证Token   ### "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-projectid-stories-2173.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-projectid-stories-2173.md",
+    "title": "获取项目需求列表",
+    "preview": "GET/projects/:projectID/stories  ##  获取项目需求列表   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID/stories  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-projectid-testcases-2204.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-projectid-testcases-2204.md",
+    "title": "获取项目测试用例列表",
+    "preview": "GET/projects/:projectID/testcases  ##  获取项目测试用例列表   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID/testcases  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-projects-projectid-testtasks-2237.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-projects-projectid-testtasks-2237.md",
+    "title": "获取项目测试单列表",
+    "preview": "GET/projects/:projectID/testtasks  ##  获取项目测试单列表   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID/testtasks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-requirements-storyid-2189.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-requirements-storyid-2189.md",
+    "title": "获取用户需求详情",
+    "preview": "GET/requirements/:storyID  ##  获取用户需求详情   ### 请求URL https://xxx.com/api.php/v2/requirements/:storyID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-stories-storyid-2175.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-stories-storyid-2175.md",
+    "title": "获取需求详情",
+    "preview": "GET/stories/:storyID  ##  获取需求详情   ### 请求URL https://xxx.com/api.php/v2/stories/:storyID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |  st"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-tasks-taskid-2210.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-tasks-taskid-2210.md",
+    "title": "获取任务详情",
+    "preview": "GET/tasks/:taskID  ##  获取任务详情   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |  status  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-testcases-caseid-2206.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-testcases-caseid-2206.md",
+    "title": "获取测试用例详情",
+    "preview": "GET/testcases/:caseID  ##  获取测试用例详情   ### 请求URL https://xxx.com/api.php/v2/testcases/:caseID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-tickets-ticketid-2224.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-tickets-ticketid-2224.md",
+    "title": "获取工单详情",
+    "preview": "GET/tickets/:ticketID  ##  获取工单详情   ### 请求URL https://xxx.com/api.php/v2/tickets/:ticketID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-users-2145.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-users-2145.md",
+    "title": "获取用户列表",
+    "preview": "GET/users  ##  获取用户列表   ### 请求URL https://xxx.com/api.php/v2/users  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述 |  browseType  否  内部用户 inside | 内部用户 outside  |  or"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_get-users-userid-2146.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_get-users-userid-2146.md",
+    "title": "获取用户详情",
+    "preview": "GET/users/:userID  ##  获取用户详情   ### 请求URL https://xxx.com/api.php/v2/users/:userID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求参数 |  名称  必填  描述  ### 请求响应 |  名称  类型  描述 |  status  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-bugs-2192.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-bugs-2192.md",
+    "title": "创建Bug",
+    "preview": "POST/bugs  ##  创建Bug   ### 请求URL https://xxx.com/api.php/v2/bugs  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  所属产品  |  title  string  是  B"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-builds-2230.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-builds-2230.md",
+    "title": "创建版本/构建",
+    "preview": "POST/builds  ##  创建版本/构建   ### 请求URL https://xxx.com/api.php/v2/builds  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  executionID  int  是  所属执行/迭代  |  product "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-epics-2178.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-epics-2178.md",
+    "title": "创建业务需求",
+    "preview": "POST/epics  ##  创建业务需求   ### 请求URL https://xxx.com/api.php/v2/epics  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  产品ID  |  title  string  是"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-executions-2160.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-executions-2160.md",
+    "title": "创建执行",
+    "preview": "POST/executions  ##  创建执行   ### 请求URL https://xxx.com/api.php/v2/executions  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  project  int  是  所属项目  |  name  stri"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-feedbacks-2215.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-feedbacks-2215.md",
+    "title": "创建反馈",
+    "preview": "POST/feedbacks  ##  创建反馈   ### 请求URL https://xxx.com/api.php/v2/feedbacks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  product  int  是  所属产品  |  title  strin"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-files-2325.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-files-2325.md",
+    "title": "上传附件，使用表单方式提交",
+    "preview": "POST  /files   ##  上传附件，使用表单方式提交   版本：v22.0及以上   ###  请求URL  https://xxx.com/api.php/v2/files  ###  请求头  |   名称   类型   必填   描述  |   token   string   是   访问凭证Token   ###  请求体  |   名称   类型   必填   描述  | "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-files-2326.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-files-2326.md",
+    "title": "编辑附件，修改附件的名称",
+    "preview": "PUT  /files/:fileID   ##  编辑附件，修改附件的名称   ###  请求URL  https://xxx.com/api.php/v2/files/1  ###  请求头  |   名称   类型   必填   描述  |   token   string   是   访问凭证Token   ###  请求体  |   名称   类型   必填   描述  |   file"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-productplans-2165.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-productplans-2165.md",
+    "title": "创建产品计划",
+    "preview": "POST/productplans  ##  创建产品计划   ### 请求URL https://xxx.com/api.php/v2/productplans  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  产品ID  |  ti"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-products-2151.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-products-2151.md",
+    "title": "创建产品",
+    "preview": "POST/products  ##  创建产品   ### 请求URL https://xxx.com/api.php/v2/products  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  产品名称  |  program  int  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-programs-2147.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-programs-2147.md",
+    "title": "创建项目集",
+    "preview": "POST/programs  ##  创建项目集   ### 请求URL https://xxx.com/api.php/v2/programs  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  项目集名称  |  begin  date "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-projects-2156.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-projects-2156.md",
+    "title": "创建项目",
+    "preview": "POST/projects  ##  创建项目   ### 请求URL https://xxx.com/api.php/v2/projects  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  项目名称  |  model  string "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-releases-2239.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-releases-2239.md",
+    "title": "创建发布",
+    "preview": "POST/releases  ##  创建发布   ### 请求URL https://xxx.com/api.php/v2/releases  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  所属产品  |  system  int "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-requirements-2185.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-requirements-2185.md",
+    "title": "创建用户需求",
+    "preview": "POST/requirements  ##  创建用户需求   ### 请求URL https://xxx.com/api.php/v2/requirements  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  产品ID  |  ti"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-stories-2169.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-stories-2169.md",
+    "title": "创建需求",
+    "preview": "POST/stories  ##  创建需求   ### 请求URL https://xxx.com/api.php/v2/stories  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  产品ID  |  title  string "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-systems-2227.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-systems-2227.md",
+    "title": "创建应用",
+    "preview": "POST/systems  ##  创建应用   ### 请求URL https://xxx.com/api.php/v2/systems  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  所属产品  |  integrated  in"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-tasks-2207.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-tasks-2207.md",
+    "title": "创建任务",
+    "preview": "POST/tasks  ##  创建任务   ### 请求URL https://xxx.com/api.php/v2/tasks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  任务名称  |  executionID  int  是 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-testcases-2201.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-testcases-2201.md",
+    "title": "创建测试用例",
+    "preview": "POST/testcases  ##  创建测试用例   ### 请求URL https://xxx.com/api.php/v2/testcases  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  所属产品  |  title  s"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-testtasks-2234.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-testtasks-2234.md",
+    "title": "创建测试单",
+    "preview": "POST/testtasks  ##  创建测试单   ### 请求URL https://xxx.com/api.php/v2/testtasks  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  productID  int  是  所属产品ID  |  name  s"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-tickets-2221.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-tickets-2221.md",
+    "title": "创建工单",
+    "preview": "POST/tickets  ##  创建工单   ### 请求URL https://xxx.com/api.php/v2/tickets  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  product  int  是  所属产品  |  module  int  否  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-users-2143.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-users-2143.md",
+    "title": "创建用户",
+    "preview": "POST/users  ##  创建用户   ### 请求URL https://xxx.com/api.php/v2/users  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  account  string  是  登录名  |  realname  string  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_post-users-login-2142.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_post-users-login-2142.md",
+    "title": "获取Token",
+    "preview": "POST/users/login  ##  获取Token   ### 请求URL https://xxx.com/api.php/v2/users/login  ### 请求体 |  名称  类型  必填  描述 |  account  string  是  用户名  |  password  string  是  密码  ### 请求示例  ``` {     \"account\": \"admi"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-bugs-bugid-2193.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-bugs-bugid-2193.md",
+    "title": "修改Bug",
+    "preview": "PUT/bugs/:bugID  ##  修改Bug   ### 请求URL https://xxx.com/api.php/v2/bugs/:bugID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  title  string  否  Bug标题  |  severi"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-bugs-bugid-activate-2200.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-bugs-bugid-activate-2200.md",
+    "title": "激活Bug",
+    "preview": "PUT/bugs/:bugID/activate  ##  激活Bug   ### 请求URL https://xxx.com/api.php/v2/bugs/:bugID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  openedBuild  arr"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-bugs-bugid-close-2199.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-bugs-bugid-close-2199.md",
+    "title": "关闭Bug",
+    "preview": "PUT/bugs/:bugID/close  ##  关闭Bug   ### 请求URL https://xxx.com/api.php/v2/bugs/:bugID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  comment  string  否  备注"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-bugs-bugid-resolve-2198.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-bugs-bugid-resolve-2198.md",
+    "title": "解决Bug",
+    "preview": "PUT/bugs/:bugID/resolve  ##  解决Bug   ### 请求URL https://xxx.com/api.php/v2/bugs/:bugID/resolve  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  resolution  string"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-builds-buildid-2231.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-builds-buildid-2231.md",
+    "title": "修改版本",
+    "preview": "PUT/builds/:buildID  ##  修改版本   ### 请求URL https://xxx.com/api.php/v2/builds/:buildID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  execution  int  是  所属执行/迭代 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-epics-epicid-2179.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-epics-epicid-2179.md",
+    "title": "修改业务需求",
+    "preview": "PUT/epics/:epicID  ##  修改业务需求   ### 请求URL https://xxx.com/api.php/v2/epics/:epicID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  title  string  是  需求名称  |  pr"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-epics-epicid-activate-2184.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-epics-epicid-activate-2184.md",
+    "title": "激活业务需求",
+    "preview": "PUT/epics/:epicID/activate  ##  激活业务需求   ### 请求URL https://xxx.com/api.php/v2/epics/:epicID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  assignedTo "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-epics-epicid-change-2180.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-epics-epicid-change-2180.md",
+    "title": "变更业务需求",
+    "preview": "PUT/epics/:epicID/change  ##  变更业务需求   ### 请求URL https://xxx.com/api.php/v2/epics/:epicID/change  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  title  string  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-epics-epicid-close-2183.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-epics-epicid-close-2183.md",
+    "title": "关闭业务需求",
+    "preview": "PUT/epics/:epicID/close  ##  关闭业务需求   ### 请求URL https://xxx.com/api.php/v2/epics/:epicID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  closedReason  str"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-executions-executionid-2161.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-executions-executionid-2161.md",
+    "title": "修改执行",
+    "preview": "PUT/executions/:executionID  ##  修改执行   ### 请求URL https://xxx.com/api.php/v2/executions/:executionID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  project  in"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-feedbacks-feedbackid-2216.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-feedbacks-feedbackid-2216.md",
+    "title": "修改反馈",
+    "preview": "PUT/feedbacks/:feedbackID  ##  修改反馈   ### 请求URL https://xxx.com/api.php/v2/feedbacks/:feedbackID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  product  int  是"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-feedbacks-feedbackid-activate-2220.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-feedbacks-feedbackid-activate-2220.md",
+    "title": "激活反馈",
+    "preview": "PUT/feedbacks/:feedbackID/activate  ##  激活反馈   ### 请求URL https://xxx.com/api.php/v2/feedbacks/:feedbackID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-feedbacks-feedbackid-close-2219.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-feedbacks-feedbackid-close-2219.md",
+    "title": "关闭反馈",
+    "preview": "PUT/feedbacks/:feedbackID/close  ##  关闭反馈   ### 请求URL https://xxx.com/api.php/v2/feedbacks/:feedbackID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  clo"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-productplans-productplanid-2166.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-productplans-productplanid-2166.md",
+    "title": "修改产品计划",
+    "preview": "PUT/productplans/:productplanID  ##  修改产品计划   ### 请求URL https://xxx.com/api.php/v2/productplans/:productplanID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  t"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-products-productid-2152.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-products-productid-2152.md",
+    "title": "修改产品",
+    "preview": "PUT/products/:productID  ##  修改产品   ### 请求URL https://xxx.com/api.php/v2/products/:productID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  产品"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-programs-programid-2148.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-programs-programid-2148.md",
+    "title": "修改项目集",
+    "preview": "PUT/programs/:programID  ##  修改项目集   ### 请求URL https://xxx.com/api.php/v2/programs/:programID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  项"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-projects-projectid-2157.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-projects-projectid-2157.md",
+    "title": "修改项目",
+    "preview": "PUT/projects/:projectID  ##  修改项目   ### 请求URL https://xxx.com/api.php/v2/projects/:projectID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  项目"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-releases-releasid-2240.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-releases-releasid-2240.md",
+    "title": "修改发布",
+    "preview": "PUT/releases/:releasID  ##  修改发布   ### 请求URL https://xxx.com/api.php/v2/releases/:releasID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  system  int  是  所属应用 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-requirements-requirementid-2186.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-requirements-requirementid-2186.md",
+    "title": "修改用户需求",
+    "preview": "PUT/requirements/:requirementID  ##  修改用户需求   ### 请求URL https://xxx.com/api.php/v2/requirements/:requirementID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  t"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-requirements-requirementid-activate-2191.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-requirements-requirementid-activate-2191.md",
+    "title": "激活用户需求",
+    "preview": "PUT/requirements/:requirementID/activate  ##  激活用户需求   ### 请求URL https://xxx.com/api.php/v2/requirements/:requirementID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-requirements-requirementid-change-2187.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-requirements-requirementid-change-2187.md",
+    "title": "变更用户需求",
+    "preview": "PUT/requirements/:requirementID/change  ##  变更用户需求   ### 请求URL https://xxx.com/api.php/v2/requirements/:requirementID/change  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-requirements-requirementid-close-2190.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-requirements-requirementid-close-2190.md",
+    "title": "关闭用户需求",
+    "preview": "PUT/requirements/:requirementID/close  ##  关闭用户需求   ### 请求URL https://xxx.com/api.php/v2/requirements/:requirementID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-stories-storyid-2170.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-stories-storyid-2170.md",
+    "title": "修改需求",
+    "preview": "PUT/stories/:storyID  ##  修改需求   ### 请求URL https://xxx.com/api.php/v2/stories/:storyID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  title  string  是   |  pri"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-stories-storyid-activate-2177.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-stories-storyid-activate-2177.md",
+    "title": "激活需求",
+    "preview": "PUT/stories/:storyID/activate  ##  激活需求   ### 请求URL https://xxx.com/api.php/v2/stories/:storyID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  assigne"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-stories-storyid-change-2171.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-stories-storyid-change-2171.md",
+    "title": "变更需求",
+    "preview": "PUT/stories/:storyID/change  ##  变更需求   ### 请求URL https://xxx.com/api.php/v2/stories/:storyID/change  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  title  stri"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-stories-storyid-close-2176.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-stories-storyid-close-2176.md",
+    "title": "关闭需求",
+    "preview": "PUT/stories/:storyID/close  ##  关闭需求   ### 请求URL https://xxx.com/api.php/v2/stories/:storyID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  closedReason "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-systems-systemid-2228.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-systems-systemid-2228.md",
+    "title": "修改应用",
+    "preview": "PUT/systems/:systemID  ##  修改应用   ### 请求URL https://xxx.com/api.php/v2/systems/:systemID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  是  应用名称  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tasks-taskid-2208.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tasks-taskid-2208.md",
+    "title": "修改任务",
+    "preview": "PUT/tasks/:taskID  ##  修改任务   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  否  任务名称  |  type "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tasks-taskid-activate-2214.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tasks-taskid-activate-2214.md",
+    "title": "激活任务",
+    "preview": "PUT/tasks/:taskID/activate  ##  激活任务   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  left  number "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tasks-taskid-close-2213.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tasks-taskid-close-2213.md",
+    "title": "关闭任务",
+    "preview": "PUT/tasks/:taskID/close  ##  关闭任务   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  comment  string  否 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tasks-taskid-finish-2212.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tasks-taskid-finish-2212.md",
+    "title": "完成任务",
+    "preview": "PUT/tasks/:taskID/finish  ##  完成任务   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID/finish  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  currentConsumed  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tasks-taskid-start-2211.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tasks-taskid-start-2211.md",
+    "title": "启动任务",
+    "preview": "PUT/tasks/:taskID/start  ##  启动任务   ### 请求URL https://xxx.com/api.php/v2/tasks/:taskID/start  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  assignedTo  string "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-testcases-testcasid-2202.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-testcases-testcasid-2202.md",
+    "title": "修改测试用例",
+    "preview": "PUT  /testcases/:testcasID   ##  修改测试用例   ###  请求URL  https://xxx.com/api.php/v2/testcases/:testcasID  ###  请求头  |   名称   类型   必填   描述  |   token   string   是   访问凭证Token   ###  请求体  |   名称   类型   必填 "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-testtasks-testtaskid-2235.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-testtasks-testtaskid-2235.md",
+    "title": "修改测试单",
+    "preview": "PUT/testtasks/:testtaskID  ##  修改测试单   ### 请求URL https://xxx.com/api.php/v2/testtasks/:testtaskID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  name  string  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tickets-ticketid-2222.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tickets-ticketid-2222.md",
+    "title": "修改工单",
+    "preview": "PUT/tickets/:ticketID  ##  修改工单   ### 请求URL https://xxx.com/api.php/v2/tickets/:ticketID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  product  int  否  所属产品  "
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tickets-ticketid-activate-2226.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tickets-ticketid-activate-2226.md",
+    "title": "激活工单",
+    "preview": "PUT/tickets/:ticketID/activate  ##  激活工单   ### 请求URL https://xxx.com/api.php/v2/tickets/:ticketID/activate  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  assig"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-tickets-ticketid-close-2225.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-tickets-ticketid-close-2225.md",
+    "title": "关闭工单",
+    "preview": "PUT/tickets/:ticketID/close  ##  关闭工单   ### 请求URL https://xxx.com/api.php/v2/tickets/:ticketID/close  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  closedReaso"
+  },
+  {
+    "section": "禅道RESTfulAPIv2.0开发手册",
+    "file": "api_put-users-userid-2144.html",
+    "md_file": "禅道RESTfulAPIv2.0开发手册/api_put-users-userid-2144.md",
+    "title": "修改用户信息",
+    "preview": "PUT/users/:userID  ##  修改用户信息   ### 请求URL https://xxx.com/api.php/v2/users/:userID  ### 请求头 |  名称  类型  必填  描述 |  token  string  是  访问凭证Token  ### 请求体 |  名称  类型  必填  描述 |  realname  string  否  真实姓名  | "
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_about-1210.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_about-1210.md",
+    "title": "关于zentaoPHP框架 - zentaoPHP框架手册",
+    "preview": "#### 一、zentaoPHP框架的缘起 2009年我们决定开始启动禅道项目管理软件的开发，编程语言自然选择了一直使用的PHP。但在开发框架的选择上，颇费了一番功夫。09年的时候，php5.2系列的版本oop的功能已经比较强大，市面上也出现了一大批的框架。比如cakephp, symfony, zend framework, CodeIgniter等等。仔细的研究这些框架之后，符合我们要求的是C"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_basic-1223.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_basic-1223.md",
+    "title": "zentaoPHP框架里面的基本概念 - zentaoPHP框架手册",
+    "preview": "zentaoPHP框架的所有请求都是通过index.php来进行的。它的基本原理是通过设置apache或者其他webserver，将所有的请求都转交给index.php。index.php加载框架文件，初始化应用，然后分析请求，得到请求对应对模块名、方法和参数，然后加载相应模块的control方法，model方法，后渲染模板，展示给用户。基本的模型如下：   ![](https://static."
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_blog-1230.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_blog-1230.md",
+    "title": "部署框架自带的简单的blog示例 - zentaoPHP框架手册",
+    "preview": "zentaoPHP框架中自带了一个简单的blog示例，下面让我们来部署这个示例应用。如果安装的时候已经初始化了数据库，跳过这一步。   #### 一、创建数据库 在db目录下面，有一个blog.sql。这是一个非常简单的表结构，使用phpmyadmin，或者是命令行的mysql工具，创建一个数据库，叫做blog，然后把这个sql文件里面的建表工具导入。  $> mysql -u root -p  "
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_dao-1225.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_dao-1225.md",
+    "title": "zentaoPHP框架提供的DAO功能 - zentaoPHP框架手册",
+    "preview": "#### 一、关于DAO的说明 zentaoPHP并没有试着去实现ORM或者ActiveRecord这样的概念。因为我们相信，框架要留给开发人员足够的自由发挥的空间，而不是所有的都要包办。所以框架里面提供了一个简单方便的数据库访问对象类DAO。并且我们在封装DAO的时候尽可能的兼容标准的sql写法。  DAO类的定义在lib下面的dao.class.php中。框架在加载的时候，会自动生成$this"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_fast-1224.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_fast-1224.md",
+    "title": "简单的Hello world! - zentaoPHP框架手册",
+    "preview": "安装好框架之后，让我们来用框架来实现helloworld! 我们以框架代码部署在/var/www/zentaophp为例：   #### 一、了解框架目录结构   新版本的框架对目录结构进行了简化。解压缩zentaoPHP框架之后，你可以看到这个目录下面有如下文件：   ![](https://static.zentao.net/web/data/upload/201408/f_2b9b36e46"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_feature-1237.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_feature-1237.md",
+    "title": "zentaophp框架的主要功能 - zentaoPHP框架手册",
+    "preview": "zentaoPHP框架的主要功能如下：   #### 一、单一入口模式 单一入口是现在比较流行的开发方式。好处在于可以有一个集中的控制。或者讲框架一个比较基本的东西也是单一入口吧。现在ZenTaoPHP框架支持web方式和命令行方式的两种入口文件。具体的例子大家可以查看app目录下面的demo/www/index.php和cli/call这两个文件。   #### 二、MVC模式  ZenTaoP"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_install-1220.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_install-1220.md",
+    "title": "zentaoPHP框架系统要求 - zentaoPHP框架手册",
+    "preview": "zentaoPHP框架是基于php5版本的oop特性开发的，不兼容php4版本。所以在您使用zentaoPHP框架之前，请确认您的环境满足下面的要求：  1. web server最好是apache。因为它和php集成使用是稳定，功能也是齐全的一套组合。  2. PHP低版本是5.2版本。  3. 数据库目前只支持MySQL，版本4.x以上。   现在amp组合的安装比以前已经简单多了。windo"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_install-1221.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_install-1221.md",
+    "title": "zentaoPHP框架安装 - zentaoPHP框架手册",
+    "preview": "#### 一、安装apache, mysql, php的运行环境 首先要确认你的机器上面已经安装好了apache, mysql, php的运行环境。而且符合zentaoPHP框架的系统要求 (http://devel.zentao.net/help-read-78489.html)。   #### 二、获取新的zentaoPHP框架 从devel.easycorp.cn (/)下载新的zentao"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_license-1219.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_license-1219.md",
+    "title": "zentaophp框架授权协议 - zentaoPHP框架手册",
+    "preview": "zentaoPHP框架开始的授权协议是LGPL。LGPL协议对大家的使用还是有一些限制的，尤其是对一些商用。所以我们做了一个决定，从2.1版本开始，彻底将zentaoPHP代码的版权捐献出来，以public domain协议发布！简单来讲，任何人或者任何单位可以用ZenTaoPHP框架做任何的使用，而没有任何的限制。包括重新发布，改名，商用，等等。   ``` /** * The control "
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_link-1231.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_link-1231.md",
+    "title": "如何生成链接 - zentaoPHP框架手册",
+    "preview": "因为zentaoPHP框架有两种运行方式，所以在生成链接的时候，尽量不要手工拼写链接代码，通过调用系统提供的createLink方法，来生成链接。   #### 一、$this->createLink()方法 比如，我们要生成一个blog模块的view方法的链接，需要传递参数为id=17，这样来调用：   echo $this->createLink('blog', 'view', 'id=17&"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_mvc-1228.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_mvc-1228.md",
+    "title": "使用MVC实现的hello world! - zentaoPHP框架手册",
+    "preview": "在上一章中，我们实现了简单的Hello world输出，在这一章里面，我们将向你展示如何利用mvc的结构来实现Hello world.   #### 一、仅有control.php的hello world. 在上一个章节中，我们所实现的代码，实际上是在control里面直接输出了Hello world.   ``` <?php class hello extends control {     p"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_pager-1226.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_pager-1226.md",
+    "title": "zentaoPHP框架的分页解决方案 - zentaoPHP框架手册",
+    "preview": "分页对于基于数据库的应用来讲，是很常见的一个问题。新的zentaoPHP框架中，提供了内置的分页功能。使用如下：  我们以查询用户列表为例，在应用中建立一个user的模块，在其中的control文件中，定义一个browse方法，来完成分页的功能：   #### 一、browse方法关于分页的三个参数 browse方法需要定义三个参数：recTotal, recPerPage, pageID，变量名"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_request-1229.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_request-1229.md",
+    "title": "zentaoPHP框架的两种请求方式 - zentaoPHP框架手册",
+    "preview": "zentaoPHP框架共支持两种方式，一种是传统的GET方式，一种是静态友好的方式。   #### 一、传统GET方式 可以在config/my.php里面设置requestType为GET来启用GET方式。当打开GET方式之后，访问地址格式如下：  index.php?m=$moduleName&f=$methodName&$param1=$value1&param2=valur2&t=html"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_static-1232.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_static-1232.md",
+    "title": "框架里面提供的html, js和css类 - zentaoPHP框架手册",
+    "preview": "禅道框架里面提供了一个front.class.php，里面内置了三个类，分别为html, js和css，用来生成一些html标签，创建简单的js交互。   #### 一、html类 - html::title($title)  生成$title标签。  - html::meta($name, $value) 生成html的meta标签。  - html::icon($url) 生成icon文件的调"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_structure-1222.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_structure-1222.md",
+    "title": "zentaoPHP目录结构 - zentaoPHP框架手册",
+    "preview": "目录结构对于一个框架来讲是比较重要的。我们一起来看一下ZenTaoPHP的目录结构。   #### 一、顶级目录结构  ``` config：           配置文件所在的目录。包含了config.php和my.php db：               demo应用所需要的blog.sql framework：        包含了框架的核心文件。 js：               包含"
+  },
+  {
+    "section": "禅道SDK开发手册",
+    "file": "zentaophphelp_verify-1227.html",
+    "md_file": "禅道SDK开发手册/zentaophphelp_verify-1227.md",
+    "title": "zentaoPHP框架中的数据验证机制 - zentaoPHP框架手册",
+    "preview": "数据验证在web应用中尤其显得重要。下面来给大家介绍下禅道框架的数据验证机制。   #### 一、验证规则放在什么地方？ mvc程序中，每一层都可以放验证规则。比如很多的表单验证，会自动根据用户的输入进行验证，然后给予提示。那么数据验证放在哪一层呢？这个问题网络上大家有很多的争议。有的人主要放在view这一层，有的则主张放在control层。zentaoPHP选择了model层。  为什么这样做呢"
+  }
+]

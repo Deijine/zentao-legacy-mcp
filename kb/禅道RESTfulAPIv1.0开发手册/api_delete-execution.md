@@ -1,0 +1,24 @@
+# 删除执行
+
+DELETE  /executions/id 
+
+##  删除执行 
+
+###  请求URL  https://xxx.com/api.php/v1/executions/id 
+
+###  请求头 
+|   名称   类型   必填   描述 
+|   Token   String   是   认证凭证Token 
+| 
+
+###  请求响应 
+|   名称   类型   必填   描述 
+|   message   string   是   删除结果 
+
+###  响应示例 
+
+```
+{
+    ”message": "success"
+}
+```

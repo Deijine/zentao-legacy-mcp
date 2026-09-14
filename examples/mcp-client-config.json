@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "zentao-legacy": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/zentao-legacy-mcp/dist/standalone/zentao-legacy-mcp.cjs"]
+    }
+  }
+}
+
+
+
+

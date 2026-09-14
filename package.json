@@ -1,0 +1,52 @@
+{
+  "name": "zentao-legacy-mcp",
+  "version": "1.0.0",
+  "description": "Cross-client MCP server for ZenTao (禅道) legacy session-based API (biz 4.x) — 86 tools: products/stories/bugs/tasks/builds/cases, rich-text images auto-upload, attachments, first-run deployment discovery.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "zentao-legacy-mcp": "dist/standalone/zentao-legacy-mcp.cjs"
+  },
+  "prepack": "npm run build && npm run build:standalone",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "build:standalone": "esbuild src/index.ts --bundle --platform=node --format=cjs --target=node18 --outfile=dist/standalone/zentao-legacy-mcp.cjs && chmod +x dist/standalone/zentao-legacy-mcp.cjs && echo standalone built",
+    "test": "node test/smoke.mjs",
+    "test:read": "tsx test/run_agent_tests.mjs",
+    "test:tool": "node test/run_tests.mjs",
+    "test:apply": "tsx test/run_agent_tests.mjs --apply",
+    "test:licenses": "node test/licenses.mjs",
+    "check": "tsc --noEmit && echo OK"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "zentao",
+    "zentao-pms",
+    "chandao",
+    "project-management",
+    "bug-tracking"
+  ],
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "dist/standalone",
+    "README.md",
+    "LICENSE",
+    "examples"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "zod": "^4.5.4",
+    "zod-to-json-schema": "^3.25.2"
+  }
+}

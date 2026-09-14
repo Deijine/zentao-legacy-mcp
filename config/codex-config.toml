@@ -1,0 +1,7 @@
+# Add to ~/.codex/config.toml
+# 凭据由服务端从 ~/.local/share/zentao-legacy-mcp/env 自动加载，此处不写 env。
+# 把 /ABS/PATH/TO 换成你部署本项目的绝对路径。
+
+[mcp_servers.zentao-legacy]
+command = "node"
+args = ["/ABS/PATH/TO/zentao-legacy-mcp/dist/standalone/zentao-legacy-mcp.cjs"]

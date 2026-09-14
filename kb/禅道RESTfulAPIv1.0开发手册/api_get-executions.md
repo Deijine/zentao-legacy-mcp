@@ -1,0 +1,54 @@
+# 获取项目的执行列表
+
+GET  /projects/id/executions 
+
+##  获取项目的执行列表 
+
+###  请求URL  https://xxx.com/api.php/v1/projects/id/executions 
+
+###  请求头 
+|   名称   类型   必填   描述 
+|   Token   String   是   认证凭证Token 
+| 
+
+###  请求响应 
+|   名称   类型   必填   描述 
+|   page   int   是   当前页数 
+|   total   int   是   执行总数 
+|   limit   int   是   每页执行数 
+|   executions   array   是   执行列表 
+|     ∟  id   int   是   执行ID 
+|     ∟  name   string   是   执行名称 
+|     ∟  code   string   是   执行代号 
+|     ∟  begin   date   是   计划开始日期 
+|     ∟  end   date   是   计划结束日期 
+|     ∟  status   string   是   执行状态() 
+|     ∟  openedBy    是   创建人 
+|     ∟  openedDate   datetime   是   创建时间 
+|     ∟  progress   int   是   当前进度 
+
+###  响应示例 
+
+```
+{
+    "page": 1,
+    "total": 1,
+    "limit": 20,
+    "executions": [
+        {
+            "id": 13,
+            "name": "迭代1",
+            "project": 12,
+            "code": "sprint1",
+            "type": "sprint",
+            "parent": 12,
+            "begin": "2021-11-26",
+            "end": "2021-12-02",
+            "status": "wait",
+            "openedBy": "admin",
+            "openedDate": "2021-11-26T02:42:22Z",
+            "progress": 0
+        }
+    ]
+}
+```

@@ -1,0 +1,20 @@
+node_modules/
+.npmcache/
+.session/
+*.log
+.env
+.env.*
+!.env.example
+# debug/test scratch
+test/inspect*.mjs
+test/dbg*.mjs
+
+# build artifacts (rebuilt via npm run build / build:standalone)
+dist/
+
+# local/tool state
+.codex/
+.loopx/
+.DS_Store
+*.zst
+*.zstddocs/

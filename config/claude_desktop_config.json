@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "zentao-legacy": {
+      "command": "node",
+      "args": [
+        "/ABS/PATH/TO/zentao-legacy-mcp/dist/standalone/zentao-legacy-mcp.cjs"
+      ],
+      "comment": "凭据走服务端 env 文件（~/.local/share/zentao-legacy-mcp/env），此处不写账号密码"
+    }
+  }
+}
