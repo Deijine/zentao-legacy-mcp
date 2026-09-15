@@ -441,6 +441,7 @@ async function storyCreate(client: ZentaoClient, args: Record<string, any>): Pro
   // 2. Validate pri (1-4); type is fixed to 'story' (matching form hidden input).
   const pri = args.pri != null ? Number(args.pri) : 3;
   if (![1,2,3,4].includes(pri)) throw new Error('pri must be 1-4, got ' + pri);
+
   const type = 'story'; // Fixed: must match form hidden input type=story. 'feature' etc. are sub-types, not the main type.
   // 2b. Rich text: upload local images in spec/verify to the ZenTao file store (url substituted, rest of HTML untouched).
   const specEmb = await embedLocalImages(client, args.spec || '', pageUrl);
@@ -452,6 +453,7 @@ async function storyCreate(client: ZentaoClient, args: Record<string, any>): Pro
     source: args.source || 'conclusion', sourceNote: args.sourceNote || 0,
     assignedTo: args.assignedTo || '', needNotReview: '',
     title, color: client.config.markersEnabled ? (client.config.markerColor || '') : '',
+
     pri, estimate: args.estimate != null ? String(args.estimate) : '0',
     spec: specEmb.html, verify: verifyEmb.html, status: 'active',
     'labels[]': '', 'files[]': '', 'mailto[]': '', keywords, type, uid
