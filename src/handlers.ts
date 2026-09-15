@@ -482,14 +482,25 @@ async function storyCreate(client: ZentaoClient, args: Record<string, any>): Pro
       } catch {}
     }
   }
+  // 5. Auto-review: stories land in DRAFT; review(pass) activates them. Default ON so a single
+  //    call yields an ACTIVE story with attachments already in place (attachments must be added
+  //    BEFORE review — which is guaranteed here since they were uploaded during create).
+  //    Set autoReview: false to keep the story in draft (e.g. for real human review).
+  let reviewed = false; let reviewError = null;
+  if (newStoryID && args.autoReview !== false) {
+    try { await storyReview(client, { storyID: Number(newStoryID), result: 'pass', comment: args.reviewComment || 'MCP 创建时自动评审通过' }); reviewed = true; }
+    catch (e) { reviewError = (e as Error).message.slice(0, 200); }
+  }
+  const finalStatus = reviewed ? 'active' : 'draft';
   return ok({
-    created: true, newStoryID: newStoryID ? Number(newStoryID) : null, url: viewUrl(client, 'story', newStoryID ? Number(newStoryID) : null), status: 'draft', idempotent: false, idempotency_note: '重复调用会创建新需求（不会去重）',
+    created: true, newStoryID: newStoryID ? Number(newStoryID) : null, url: viewUrl(client, 'story', newStoryID ? Number(newStoryID) : null), status: finalStatus, idempotent: false, idempotency_note: '重复调用会创建新需求（不会去重）',
     images: storyImages.length ? storyImages : undefined,
     attachments: storyAttachments.length ? storyAttachments.map((p) => ({ name: path.basename(p), bytes: fs.statSync(p).size })) : undefined,
     locate: res.data.locate || '',
     marker: client.config.markersEnabled
       ? { enabled: true, keywords, color: client.config.markerColor || null, note: 'Filter cloud stories by keywords prefix ' + (client.config.markerPrefix || 'MCP-AUTO') + ' (new stories start in draft status)' }
       : { enabled: false, note: 'MCP markers disabled (ZENTAO_MARKERS not set) — created story is real data, no machine marker written' },
+    reviewed, reviewError: reviewError || undefined,
     suggested_next: suggestedNext('story', 'create', newStoryID ? Number(newStoryID) : null)
   });
 }

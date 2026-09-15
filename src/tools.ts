@@ -401,7 +401,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'zentao_story_create',
-    description: 'Create a new story (需求). Requires productID and title. Optional: spec (描述), estimate (预估工时), category (feature/improvement/…), priority, story (parent epic), keywords. Creates a REAL story by default — no machine marker ([MCP] title prefix / MCP-AUTO keyword / color) is written. Machine markers are written ONLY when the server runs with ZENTAO_MARKERS=1 (development environment), for test-entity filtering/batch cleanup. Returns marker info (enabled flag) in result.',
+    description: 'Create a new story (需求) AND auto-review it to ACTIVE in one call (default). Requires productID and title. Attachments are uploaded at create time (BEFORE review — the required order). Set autoReview: false to keep the story in draft for human review. Creates a REAL story by default — no machine marker ([MCP] title prefix / MCP-AUTO keyword / color) is written. Machine markers are written ONLY when the server runs with ZENTAO_MARKERS=1 (development environment). Returns marker info + reviewed flag in result.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -413,7 +413,9 @@ export const TOOLS: ToolDef[] = [
         category: { type: 'string', default: 'feature', description: 'Category: feature/improvement/techdebt/other.' },
         pri: { type: 'integer', default: 3, description: 'Priority 1-4 (1 highest).' },
         branch: { type: 'integer', default: 0, description: 'Branch ID (0 = main).' },
-        attachments: { type: 'array', items: { type: 'string' }, description: 'Optional local file paths to attach (禅道附件, ≤50M each, e.g. XLS/PDF/logs/screenshots). Server associates them automatically.' },
+        attachments: { type: 'array', items: { type: 'string' }, description: 'Optional local file paths to attach (禅道附件, ≤50M each, e.g. XLS/PDF/logs/screenshots). Uploaded at create time, i.e. BEFORE the automatic review — the correct order.' },
+        autoReview: { type: 'boolean', default: true, description: 'Automatically review-pass the new story so it becomes ACTIVE right after creation (default true). Set false to leave it in DRAFT for a human reviewer.' },
+        reviewComment: { type: 'string', description: 'Comment written on the automatic review (optional, only used when autoReview is true).' }
       },
       required: ['productID', 'title']
     }
