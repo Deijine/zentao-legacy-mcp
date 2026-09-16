@@ -1,16 +1,17 @@
 # ZenTao Legacy MCP Server（禅道 Legacy MCP）
 
-面向 **禅道（ZenTao）经典版 biz 4.x** 的跨客户端 MCP Server。通过 session-based 经典 API 提供 **86 个工具**：产品/需求/Bug/任务/执行/版本/计划/模块/用例的完整读写，富文本图片自动上传，附件上传，以及**首次运行自动部署发现**。
+面向 **禅道（ZenTao）经典版 biz 4.x** 的跨客户端 MCP Server。通过 session-based 经典 API 提供 **87 个工具**：产品/需求/Bug/任务/执行/版本/计划/模块/用例的完整读写，富文本图片自动上传，附件上传，以及**首次运行自动部署发现**。
 
 > 本仓库是开源版本：**不包含任何特定部署的域名、账号、产品 ID 等部署信息**。所有部署结构（有哪些产品/项目/模块/版本、哪些功能点可用）在**首次运行时自动抓取并缓存到本地**，换一个禅道域名即可直接使用。
 
 ## 特性
 
-- **86 个工具**，覆盖禅道 biz 4.x 日常研发管理全流程（需求/Bug/任务/执行/版本/计划/模块/用例）
+- **87 个工具**，覆盖禅道 biz 4.x 日常研发管理全流程（需求/Bug/任务/执行/版本/计划/模块/用例）
 - **首次运行自动发现**：启动后第一次 `zentao_context`（或任何需要产品 ID 的工具）会抓取部署结构——产品列表、项目、模块树、版本、功能点状态、用户已保存的查询——缓存为本地 `profile.json`，之后秒回；`ZENTAO_PROFILE_TTL_HOURS` 控制缓存时长
 - **部署自适应**：无任何硬编码的产品/项目/模块 ID；部分部署禁用的路由（0 字节响应）自动 fallback；未开通的功能点（如测试用例）自动探测并返回明确错误
 - **富文本图片自动上传**：steps/spec/verify 中 `<img>` 的本地路径或 data: URI 自动上传到禅道文件存储并替换为公开 URL，其余 HTML 逐字节保留
 - **附件上传**：`attachments` 参数把本地文件挂为禅道「附件」（≤50M/个），与富文本内联图是两条独立通道
+- **需求一次成单**：`zentao_story_create` 创建时即上传附件，并默认自动评审通过（`autoReview: true`）——一次调用得到 ACTIVE 需求（附件先于评审的顺序由构造保证）；`autoReview: false` 保留 DRAFT 交人工评审
 - **交付模式默认**：创建的实体就是真实数据，不写任何机器标记；`ZENTAO_MARKERS=1` 开发模式可开启 [MCP] 标题/MCP-AUTO 关键词/颜色标记，便于测试实体清理
 - **单文件独立部署**：esbuild 打包成零依赖单文件，`node xxx.cjs` 直接跑；凭据走本地 env 文件（chmod 600），客户端配置零敏感信息
 - **安全内建**：删除类工具两步确认（dry_run + confirmToken/confirmPhrase）、写前 dry_run 预演、参数本地预检、推荐值必须用户确认
@@ -81,7 +82,7 @@ chmod 600 ~/.local/share/zentao-legacy-mcp/env
 
 完整示例见 `.env.example`。
 
-## 工具列表（86）
+## 工具列表（87）
 
 ### 会话 / 发现
 | 工具 | 用途 |
@@ -92,6 +93,8 @@ chmod 600 ~/.local/share/zentao-legacy-mcp/env
 
 ### 需求（story）
 `story_list` `story_get` `story_create` `story_update` `story_change` `story_review` `story_advance`（一键状态流转）`story_close` `story_delete` `story_search` `story_saved_queries`
+
+> `story_create` 一次成单：`attachments` 随创建上传，默认自动评审通过（`autoReview: true` → 直接 ACTIVE，返回 `reviewed`/`reviewError`）；`autoReview: false` 保留 DRAFT 交人工评审。创建参数含 `plan`（迭代）/`source`/`assignedTo`/`keywords`/`moduleID`，schema 已全量声明。
 
 ### Bug
 `bug_list` `bug_get` `bug_create` `bug_update` `bug_resolve` `bug_close` `bug_reopen` `bug_delete` `bug_search` `bug_saved_queries`
@@ -109,6 +112,8 @@ chmod 600 ~/.local/share/zentao-legacy-mcp/env
 `testcase_list` `testcase_get` `testcase_create` `testcase_update` `testcase_run` + `testtask_list` `testsuite_list` `testreport_list`。用例功能点未开通的部署会自动探测并返回 `feature_not_enabled`（已开通的部署正常使用）。
 
 ### 条件搜索（story_search / bug_search 的 conditions 参数）
+
+> 跨实体全文检索（"哪些需求或 Bug 提到了 X"）用 `zentao_global_search`（全文检索模块）：按关键词返回所有实体类型的排序结果（`objectType`+`objectID`+标题/摘要/相关度/可点击 url）；服务端不按类型过滤，`type` 参数为客户端过滤，`total` 为全类型总数。与单实体条件搜索互补。
 
 服务端条件搜索，三种模式（响应带 mode 字段标注）：
 
@@ -128,6 +133,7 @@ chmod 600 ~/.local/share/zentao-legacy-mcp/env
 |---|---|
 | `zentao_my_workbench` | 我名下所有未关闭的需求/Bug/任务 |
 | `zentao_filter` | 高级过滤（多值指派/优先级范围/日期/关键词） |
+| `zentao_global_search` | 跨实体全文检索（全文检索模块：需求/Bug/任务/用例/文档…按关键词的排序结果，10 页/约 1000 行上限） |
 | `zentao_stats` | 按状态/严重度/指派人/优先级分组统计 |
 | `zentao_export` | 导出 CSV/JSON（带可点击 url） |
 | `zentao_relations` | 实体关联图（需求↔Bug↔任务↔计划） |
@@ -181,7 +187,7 @@ GET 登录页拿 `zentaosid` cookie → 密码哈希 POST 登录 → 会话仅�
 ## 项目结构
 
 ```
-src/            服务端源码（client 会话客户端 / handlers 86 工具 / tools schema / profile 发现 / marker 标记）
+src/            服务端源码（client 会话客户端 / handlers 87 工具 / tools schema / profile 发现 / marker 标记）
 kb/             禅道 API 知识库（官方开发文档抓取，工具实现的依据）
 docs/           官方文档原文（RESTful API 手册 / 扩展开发）
 test/           测试（直连冒烟 / stdio 协议 / 工具用例 / agent 场景）
