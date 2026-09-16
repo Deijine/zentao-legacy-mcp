@@ -3766,6 +3766,71 @@ async function batchDryRun(client: ZentaoClient, args: Record<string, any>): Pro
   });
 }
 
+// ---- GLOBAL SEARCH (全文检索) ----
+// Route: GET /search-index.json?words=... (and /search-index-{recTotal}-{page}.json for later pages).
+// Returns a MIXED cross-entity result set (bug/story/task/case/doc/...) from the full-text index:
+//   data: { title, results: {<uniqID>: {id, objectType, objectID, title, content, addedDate, editedDate, score, summary, url}},
+//           consumed, type: 'all', pager: {recTotal, recPerPage:~10, pageTotal, pageID}, words }
+// Verified live (2026-09-15): the server does NOT apply a type filter on this GET route (type[] POST
+// to /search/ and the searchType query param are both ignored server-side) — the per-result objectType
+// lets us filter client-side. 'content' is raw numeric tokenizer noise and is dropped; 'summary'
+// carries the readable snippet. Titles/summaries wrap the match in <span class='text-danger'>...</span>.
+const GLOBAL_SEARCH_TYPES = ['all', 'story', 'bug', 'task', 'case', 'testcase', 'project', 'product', 'doc', 'caselib', 'testreport', 'testtask', 'feedback', 'service'];
+function stripHighlight(s: unknown): string {
+  return String(s || '').replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '').replace(/<br\s*\/?>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+}
+async function globalSearch(client: ZentaoClient, args: Dyn): Promise<Record<string, unknown>> {
+  const words = String(args.words || '').trim();
+  if (!words) throw new Error('words (搜索关键词) is required');
+  const type = args.type && args.type !== 'all' ? String(args.type) : 'all';
+  if (!GLOBAL_SEARCH_TYPES.includes(type)) throw new Error('type must be one of: ' + GLOBAL_SEARCH_TYPES.join(', ') + ', got ' + type);
+  const limit = Math.max(1, Math.min(Number(args.limit) || 50, 500));
+  const MAX_PAGES = 10; // hard cap: 10 pages x ~100 rows = ~1000 rows max per call
+  // Pager cookies are per-route: request 100 rows/page (server default is 10 — verified live).
+  client.cookies.pagerSearchIndex = '100';
+  const rows: Dyn[] = [];
+  let recTotal = 0, pageTotal = 0, pageID = 0;
+  let page = 1;
+  while (page <= MAX_PAGES) {
+    const path = page === 1 ? '/search-index.json' : '/search-index-' + recTotal + '-' + page + '.json';
+    const view = await client.viewJson(path, { query: { words } });
+    recTotal = Number(view.pager && view.pager.recTotal) || 0;
+    pageTotal = Number(view.pager && view.pager.pageTotal) || 0;
+    pageID = Number(view.pager && view.pager.pageID) || page;
+    const rs = (view.results || {}) as Record<string, Dyn>;
+    for (const r of Object.values(rs)) {
+      rows.push({
+        type: String(r.objectType || ''),
+        id: Number(r.objectID),
+        title: stripHighlight(r.title),
+        summary: stripHighlight(r.summary),
+        addedDate: String(r.addedDate || ''),
+        editedDate: String(r.editedDate || ''),
+        score: Number(r.score) || 0,
+        url: client.config.baseUrl + String(r.url || '').replace(/\.json$/, '.html')
+      });
+    }
+    const matched = type === 'all' ? rows.length : rows.filter(x => x.type === type).length;
+    if (matched >= limit) break;
+    if (rows.length >= recTotal || pageID >= pageTotal) break;
+    if (type !== 'all' && rows.length >= Math.min(limit * 5, 1000)) break; // bounded over-fetch while filtering
+    page++;
+  }
+  const filtered = type === 'all' ? rows : rows.filter(x => x.type === type);
+  const out = filtered.slice(0, limit);
+  return ok({
+    words, type, limit,
+    total: recTotal, // server grand total across ALL types
+    scanned: rows.length,
+    returned: out.length,
+    pagesFetched: pageID,
+    hasMore: filtered.length > out.length || (rows.length < recTotal && pageID < pageTotal),
+    results: out,
+    ...(type !== 'all' ? { note: '服务端不按类型过滤（type 为客户端过滤）：total 为全类型总数，已从 ' + rows.length + ' 行中筛出 type=' + type + ' 的 ' + filtered.length + ' 行' } : {}),
+    suggested_next: '拿到 objectType+objectID 后用对应工具看详情：story→zentao_story_get / bug→zentao_bug_get / 其他类型直接打开 url。单实体条件查询（字段/日期/OR）用 zentao_bug_search、zentao_story_search 或 zentao_filter。'
+  });
+}
+
 export const HANDLERS = {
   zentao_whoami: whoami,
   zentao_context: context,
@@ -3815,6 +3880,7 @@ export const HANDLERS = {
   zentao_bug_list: bugList,
   zentao_bug_saved_queries: bugSavedQueries,
   zentao_bug_search: bugSearch,
+  zentao_global_search: globalSearch,
   zentao_bug_get: bugGet,
   zentao_bug_create: bugCreate,
   zentao_bug_update: bugUpdate,

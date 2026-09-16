@@ -546,6 +546,19 @@ export const TOOLS: ToolDef[] = [
     }
   },
   {
+    name: 'zentao_global_search',
+    description: 'Global full-text search (全文检索) across ALL entity types — stories, bugs, tasks, cases, docs, projects, test reports… Server route /search-index (the 全文检索 module). Returns ranked cross-entity results: objectType + objectID + cleaned title/summary + addedDate/editedDate + relevance score + clickable url. Use when the user asks 全局搜索/全文检索/搜一下/哪些需求或Bug提到X. NOTE: the server returns a mixed result set and does NOT filter by type on this route — the type param is applied client-side, and total is the all-types grand total. For single-entity conditional queries (field operators/date ranges/OR) prefer zentao_bug_search / zentao_story_search / zentao_filter.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        words: { type: 'string', description: 'Search keyword(s) (搜索关键词). Full-text matched across entity title/spec/steps/keywords etc.' },
+        type: { type: 'string', enum: ['all', 'story', 'bug', 'task', 'case', 'testcase', 'project', 'product', 'doc', 'caselib', 'testreport', 'testtask', 'feedback', 'service'], default: 'all', description: 'Result type filter (client-side; server always returns mixed): all 全部 / story 需求 / bug / task 任务 / case+testcase 用例 / project 项目 / product 产品 / doc 文档 / caselib 用例库 / testreport 测试报告 / testtask 测试单 / feedback 反馈 / service 服务.' },
+        limit: { type: 'integer', default: 50, description: 'Max results to return (1-500). Server pages ~100 rows; more pages are fetched as needed (hard cap 10 pages / ~1000 rows scanned).' }
+      },
+      required: ['words']
+    }
+  },
+  {
     name: 'zentao_bug_get',
     description: 'Get one bug detail by ID, including full history (历史记录), comments, steps, and related story/task.',
     inputSchema: {
