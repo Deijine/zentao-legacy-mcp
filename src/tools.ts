@@ -240,6 +240,14 @@ export const TOOLS: ToolDef[] = [
     }
   },
   {
+    name: 'zentao_my_dashboard',
+    description: '我的地盘(/my/)数据汇总：一次调用拉取「关于我」的全部看板数据，适合外部 APP 对接——指派给我的需求/未关闭Bug（跨所有未关闭产品，unclosed=status!=closed）、我的任务（全部状态，open 计数标出）、我参与的未完项目、我参与的未关闭产品、我的动态流。所有条目带可点击 url。只读；约 30-60 秒（逐产品扫描）。只要未关闭精简视图用 zentao_my_workbench。',
+    inputSchema: {
+      type: 'object',
+      properties: {}
+    }
+  },
+  {
     name: 'zentao_export',
     description: '数据导出：将需求/Bug/任务导出为 CSV 或 JSON 字符串，支持 filters 过滤（与 zentao_filter 相同条件），每行附可点击 url。',
     inputSchema: {

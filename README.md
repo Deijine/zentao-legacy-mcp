@@ -1,12 +1,12 @@
 # ZenTao Legacy MCP Server（禅道 Legacy MCP）
 
-面向 **禅道（ZenTao）经典版 biz 4.x** 的跨客户端 MCP Server。通过 session-based 经典 API 提供 **87 个工具**：产品/需求/Bug/任务/执行/版本/计划/模块/用例的完整读写，富文本图片自动上传，附件上传，以及**首次运行自动部署发现**。
+面向 **禅道（ZenTao）经典版 biz 4.x** 的跨客户端 MCP Server。通过 session-based 经典 API 提供 **88 个工具**：产品/需求/Bug/任务/执行/版本/计划/模块/用例的完整读写，富文本图片自动上传，附件上传，以及**首次运行自动部署发现**。
 
 > 本仓库是开源版本：**不包含任何特定部署的域名、账号、产品 ID 等部署信息**。所有部署结构（有哪些产品/项目/模块/版本、哪些功能点可用）在**首次运行时自动抓取并缓存到本地**，换一个禅道域名即可直接使用。
 
 ## 特性
 
-- **87 个工具**，覆盖禅道 biz 4.x 日常研发管理全流程（需求/Bug/任务/执行/版本/计划/模块/用例）
+- **88 个工具**，覆盖禅道 biz 4.x 日常研发管理全流程（需求/Bug/任务/执行/版本/计划/模块/用例）
 - **首次运行自动发现**：启动后第一次 `zentao_context`（或任何需要产品 ID 的工具）会抓取部署结构——产品列表、项目、模块树、版本、功能点状态、用户已保存的查询——缓存为本地 `profile.json`，之后秒回；`ZENTAO_PROFILE_TTL_HOURS` 控制缓存时长
 - **部署自适应**：无任何硬编码的产品/项目/模块 ID；部分部署禁用的路由（0 字节响应）自动 fallback；未开通的功能点（如测试用例）自动探测并返回明确错误
 - **富文本图片自动上传**：steps/spec/verify 中 `<img>` 的本地路径或 data: URI 自动上传到禅道文件存储并替换为公开 URL，其余 HTML 逐字节保留
@@ -82,7 +82,7 @@ chmod 600 ~/.local/share/zentao-legacy-mcp/env
 
 完整示例见 `.env.example`。
 
-## 工具列表（87）
+## 工具列表（88）
 
 ### 会话 / 发现
 | 工具 | 用途 |
@@ -132,6 +132,7 @@ chmod 600 ~/.local/share/zentao-legacy-mcp/env
 | 工具 | 用途 |
 |---|---|
 | `zentao_my_workbench` | 我名下所有未关闭的需求/Bug/任务 |
+| `zentao_my_dashboard` | 我的地盘(/my/)汇总：跨产品指派给我的需求/未关闭Bug/我的任务/未完项目/未关闭产品/动态流（外部看板对接；配套 `npm run pull:my` 导出 JSON+CSV） |
 | `zentao_filter` | 高级过滤（多值指派/优先级范围/日期/关键词） |
 | `zentao_global_search` | 跨实体全文检索（全文检索模块：需求/Bug/任务/用例/文档…按关键词的排序结果，10 页/约 1000 行上限） |
 | `zentao_stats` | 按状态/严重度/指派人/优先级分组统计 |
@@ -187,7 +188,7 @@ GET 登录页拿 `zentaosid` cookie → 密码哈希 POST 登录 → 会话仅�
 ## 项目结构
 
 ```
-src/            服务端源码（client 会话客户端 / handlers 87 工具 / tools schema / profile 发现 / marker 标记）
+src/            服务端源码（client 会话客户端 / handlers 88 工具 / tools schema / profile 发现 / marker 标记）
 kb/             禅道 API 知识库（官方开发文档抓取，工具实现的依据）
 docs/           官方文档原文（RESTful API 手册 / 扩展开发）
 test/           测试（直连冒烟 / stdio 协议 / 工具用例 / agent 场景）

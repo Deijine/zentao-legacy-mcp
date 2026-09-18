@@ -3831,6 +3831,102 @@ async function globalSearch(client: ZentaoClient, args: Dyn): Promise<Record<str
   });
 }
 
+// ---------- MY DASHBOARD (我的地盘 /my/ 数据汇总) ----------
+// The /my/ page (我的地盘) is a block layout: each panel is its own view route
+// (my-bug / my-story / my-task / my-dynamic / project-all-undone / product-all-0-0-noclosed ...).
+// Verified live 2026-09-16: the my module routes do NOT accept the standard
+// {recTotal}-{perPage}-{page} pager segments (empty response) and ignore ?page= — so the my-*
+// routes only yield page 1 (perPage can be raised via cookies: pagerMyTask=100 etc.).
+// Strategy: stories/bugs assigned to me come from the standard product-browse routes per unclosed
+// product (story_list 'assignedtome' preset / bug_list assignedTo filter — working pagination);
+// tasks/projects/products/dynamic come from the my-* JSON routes (single page here; truncation
+// noted when pageTotal > 1).
+async function myDashboard(client: ZentaoClient, args: Dyn): Promise<Record<string, unknown>> {
+  const account = client.config.account;
+  const warnings: string[] = [];
+  const prof = loadProfile(client.config);
+  const products = (prof?.products || []).filter((p: Dyn) => (p.status || 'normal') !== 'closed');
+  if (!products.length) warnings.push('no unclosed products in profile — run zentao_context first, then retry');
+  // Browse pager cookies (deployment-native names): fewer, bigger pages per product.
+  client.cookies.pagerProductBrowse = '100'; // story browse pages
+  client.cookies.pagerBugBrowse = '200';      // bug browse pages
+  const stories: Dyn[] = [];
+  const bugs: Dyn[] = [];
+  for (const p of products.slice(0, 40)) {
+    try {
+      const sr = (await storyList(client, { productID: p.id, status: 'assignedtome', limit: 200 })) as Record<string, Dyn>;
+      for (const s of sr.data.stories || []) stories.push(s);
+    } catch (e) { warnings.push('stories product ' + p.id + ': ' + (e as Error).message.slice(0, 100)); }
+    try {
+      const br = (await bugList(client, { productID: p.id, assignedTo: account, status: 'unclosed', limit: 200 })) as Record<string, Dyn>;
+      for (const b of br.data.bugs || []) bugs.push(b);
+    } catch (e) { warnings.push('bugs product ' + p.id + ': ' + (e as Error).message.slice(0, 100)); }
+  }
+  const seenS = new Set<number>();
+  const storiesU = stories.filter((s) => { const k = Number(s.id); return seenS.has(k) ? false : (seenS.add(k), true); });
+  const seenB = new Set<number>();
+  const bugsU = bugs.filter((b) => { const k = Number(b.id); return seenB.has(k) ? false : (seenB.add(k), true); });
+  const storiesOpen = storiesU.filter((s) => s.status !== 'closed');
+  // Tasks: /my-task.json (type=assignedTo), perPage=100 cookie
+  let tasks: Dyn[] = [];
+  try {
+    client.cookies.pagerMyTask = '100';
+    const td = await client.viewJson('/my-task.json');
+    tasks = (Object.values(td.tasks || {}) as Dyn[]).map((t: Dyn) => ({ ...t, url: viewUrl(client, 'task', t.id) }));
+    const pageTotal = Number(td.pager && td.pager.pageTotal) || 1;
+    if (pageTotal > 1) warnings.push('tasks: fetched page 1 of ' + pageTotal + ' only (my-task route has no URL pagination); total ' + (td.pager.recTotal ?? '?'));
+  } catch (e) { warnings.push('tasks: ' + (e as Error).message.slice(0, 100)); }
+  const OPEN_TASK = ['wait', 'doing', 'blocked', 'paused'];
+  const tasksOpen = tasks.filter((t: Dyn) => OPEN_TASK.includes(t.status));
+  // Projects: /project-all-undone.json (项目总览: unfinished projects I am involved in)
+  let projects: Dyn[] = [];
+  try {
+    client.cookies.pagerProjectAll = '100';
+    const jd = await client.viewJson('/project-all-undone.json');
+    projects = (Object.values(jd.projectStats || jd.projects || {}) as Dyn[]).map((x: Dyn) => ({
+      id: x.id, name: x.name, code: x.code || '', type: x.type || '',
+      status: x.status || '', begin: x.begin || '', end: x.end || '',
+      url: client.config.baseUrl + '/project-view-' + x.id + '.html'
+    }));
+  } catch (e) { warnings.push('projects: ' + (e as Error).message.slice(0, 100)); }
+  // Products: /product-all-0-0-noclosed.json (产品总览: unclosed products I am involved in)
+  let productStats: Dyn[] = [];
+  try {
+    client.cookies.pagerProductAll = '100';
+    const jd = await client.viewJson('/product-all-0-0-noclosed.json');
+    productStats = (Object.values(jd.productStats || jd.products || {}) as Dyn[]).map((x: Dyn) => ({
+      id: x.id, name: x.name, code: x.code || '', status: x.status || '',
+      PO: x.PO || '', QD: x.QD || '', RD: x.RD || '',
+      url: client.config.baseUrl + '/product-view-' + x.id + '.html'
+    }));
+  } catch (e) { warnings.push('products: ' + (e as Error).message.slice(0, 100)); }
+  // Activity feed: /my-dynamic.json (best effort; may be empty on some accounts)
+  let dynamic: Dyn[] = [];
+  try {
+    const jd = await client.viewJson('/my-dynamic.json');
+    dynamic = (jd.dateGroups || []).map((g: Dyn) => ({
+      date: g.date || g.title || '',
+      items: (g.items || g.list || []).map((d: Dyn) => ({ type: d.type || d.objectType || '', id: d.id || d.objectID || null, title: d.title || d.name || '', url: d.url || '' }))
+    })).filter((g: Dyn) => (g.items || []).length);
+  } catch { /* best effort */ }
+  return ok({
+    account,
+    pulledAt: new Date().toISOString(),
+    scope: {
+      productsScanned: products.length,
+      note: 'stories/bugs = assigned to ' + account + ' across ' + products.length + ' unclosed products; unclosed = status != closed. tasks/projects/products/dynamic = the account\'s own my-page scopes (my-task / project-all-undone / product-all-0-0-noclosed / my-dynamic routes).'
+    },
+    stories: { fetched: storiesU.length, unclosed: storiesOpen.length, items: storiesOpen },
+    bugs: { fetched: bugsU.length, unclosed: bugsU.length, items: bugsU },
+    tasks: { total: tasks.length, open: tasksOpen.length, items: tasks },
+    projects: { total: projects.length, items: projects },
+    products: { total: productStats.length, items: productStats },
+    dynamic: { total: dynamic.length, groups: dynamic },
+    ...(warnings.length ? { warnings } : {}),
+    suggested_next: '外部看板对接：直接消费本返回（items 均带可点击 url）；单实体深挖用 zentao_story_get / zentao_bug_get；只要"未关闭+指派给我"的精简视图用 zentao_my_workbench。'
+  });
+}
+
 export const HANDLERS = {
   zentao_whoami: whoami,
   zentao_context: context,
@@ -3847,6 +3943,7 @@ export const HANDLERS = {
   zentao_status_enum: statusEnum,
   zentao_export: exportData,
   zentao_my_workbench: myWorkbench,
+  zentao_my_dashboard: myDashboard,
   zentao_dry_run: dryRun,
   zentao_field_guide: fieldGuide,
   zentao_filter: filterEntities,

@@ -1,7 +1,7 @@
 {
   "name": "zentao-legacy-mcp",
   "version": "1.0.0",
-  "description": "Cross-client MCP server for ZenTao (禅道) legacy session-based API (biz 4.x) — 86 tools: products/stories/bugs/tasks/builds/cases, rich-text images auto-upload, attachments, first-run deployment discovery.",
+  "description": "Cross-client MCP server for ZenTao (禅道) legacy session-based API (biz 4.x) — 88 tools: products/stories/bugs/tasks/builds/cases, rich-text images auto-upload, attachments, cross-entity full-text search, my-dashboard aggregation, first-run deployment discovery.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -17,6 +17,7 @@
     "test:tool": "node test/run_tests.mjs",
     "test:apply": "tsx test/run_agent_tests.mjs --apply",
     "test:licenses": "node test/licenses.mjs",
+    "pull:my": "node scripts/pull_my_dashboard.mjs",
     "check": "tsc --noEmit && echo OK"
   },
   "keywords": [
