@@ -1489,8 +1489,9 @@ async function buildList(client: ZentaoClient, args: Record<string, any>): Promi
 // publicly readable hosted URL. All other HTML (formatting, remote urls, site-relative
 // /file-read-*.png) is preserved byte-for-byte.
 interface EmbeddedImage { from: string; fileID: number; url: string; absUrl: string; bytes: number }
-type ImageSrcKind = 'local' | 'data' | 'remote' | 'site';
+type ImageSrcKind = 'local' | 'data' | 'remote' | 'site' | 'local_missing';
 
+const SITE_IMAGE_PATH_RX = /^\/(file-(?:read|view|download|preview)-\d+|view-file-\d+|file-\d+|uploads\/|doc-(?:read|view))/i; // 已知站点图片相对路径
 function classifyImageSrc(src: string): ImageSrcKind {
   const s = src.trim();
   if (/^https?:\/\//i.test(s)) return 'remote';
@@ -1499,8 +1500,15 @@ function classifyImageSrc(src: string): ImageSrcKind {
   if (s.startsWith('~/')) return 'local';
   if (/^[a-zA-Z]:[\\\//]/.test(s)) return 'local';            // Windows 绝对路径
   if (s.startsWith('./') || s.startsWith('../')) return 'local';
-  if (/^\/(Users|home|tmp|var|opt|private)\/.+\.[a-z0-9]{2,5}$/i.test(s)) return 'local'; // 明显的本地绝对路径
-  return 'site'; // /file-read-32694.png、uploads/xxx 等站点相对路径 → 原样保留
+  if (s.startsWith('/')) {
+    // Decisive local test first: a real file on disk is local regardless of prefix or extension
+    // (closes the old prefix-allowlist + 2-5-char-extension regex gaps: /data/x.png, extensionless
+    // names, paths with trailing queries were previously classified site and silently kept).
+    if (fs.existsSync(resolveLocalPath(s))) return 'local';
+    if (SITE_IMAGE_PATH_RX.test(s)) return 'site';
+    return 'local_missing'; // 形似本地路径但本地不存在且非站点路径 → fail loud，绝不原样保留
+  }
+  return 'site'; // uploads/xxx 等站点相对路径 → 原样保留
 }
 
 function resolveLocalPath(src: string): string {
@@ -1519,12 +1527,17 @@ async function embedLocalImages(client: ZentaoClient, html: string, kuidPage: st
   if (!matches.length) return { html, embedded: [] };
   // Pass 1: validate (fail-fast, no partial uploads)
   const missing: string[] = [];
+  const ghostLocal: string[] = [];
   for (const m of matches) {
     const kind = classifyImageSrc(m[3]);
     if (kind === 'local' && (!fs.existsSync(resolveLocalPath(m[3])) || !fs.statSync(resolveLocalPath(m[3])).isFile())) missing.push(m[3]);
+    else if (kind === 'local_missing') ghostLocal.push(m[3]);
   }
-  if (missing.length) {
-    throw new Error('富文本图片嵌入中止——以下本地图片不存在: ' + missing.join(' | '));
+  if (missing.length || ghostLocal.length) {
+    const why: string[] = [];
+    if (missing.length) why.push('以下本地图片不存在: ' + missing.join(' | '));
+    if (ghostLocal.length) why.push('以下形似本地路径但本地不存在、也非站点图片路径（原样保留会变成裂图）: ' + ghostLocal.join(' | '));
+    throw new Error('富文本图片嵌入中止——' + why.join('；'));
   }
   // Pass 2: upload (dedup by src) + surgical src replacement
   const cache = new Map<string, { absUrl: string; fileID: number }>();
@@ -2874,7 +2887,7 @@ async function htmlHelp(client: ZentaoClient, args: Record<string, any>): Promis
     notes: [
       'KindEditor filterMode=true: 未列出的标签会被过滤',
       '<br> 存为 <br />（自闭合），检测时用 /<br\s*\/?>/',
-      '<img> 三种 src：远程 URL（原样保留）/ 站点相对路径如 /file-read-*.png（原样保留）/ 本地路径或 data: URI（自动上传到禅道文件存储，替换为公开可访问 URL，其余格式原样保留；本地文件不存在时报错拒写）',
+      '<img> 三种 src：远程 URL（原样保留）/ 站点相对路径如 /file-read-*.png（原样保留）/ 本地路径或 data: URI（自动上传到禅道文件存储，替换为公开可访问 URL，其余格式原样保留；每次上传后匿名回读做字节比对，不一致自动重试最多 5 次；本地文件不存在、或形似本地路径但本地不存在又非站点路径时，报错拒写——绝不留下裂图）',
       'story spec/verify 只能通过 story_create 或 story_change 写入（story_update 不能改）',
       'bug steps 可以通过 bug_update 直接修改'
     ]

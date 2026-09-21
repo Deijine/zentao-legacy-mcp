@@ -722,7 +722,10 @@ export class ZentaoClient {
   // absorbs the first-upload-after-login failure before a form carrying real attachments).
   async uploadBuffer(buf: Buffer, fname: string, kuidPage: string): Promise<{ fileID: number; url: string; absUrl: string; attempts: number }> {
     await this.ensureLogin();
-    const MAX_ATTEMPTS = 3;
+    // 5 attempts with increasing backoff (1s/2s/3s/4s): the server's first-upload-after-login
+    // poison window has been observed to outlast 2.4s (2026-09-21 live catch: 3 consecutive
+    // 0-byte .txt stores), so a short fixed backoff can exhaust before the window clears.
+    const MAX_ATTEMPTS = 5;
     let lastDiag = '';
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       // 1. extract anti-CSRF kuid from an authenticated page (fresh per attempt)
@@ -773,9 +776,9 @@ export class ZentaoClient {
       }
       lastDiag = 'url=' + url + ' ' + diag;
       this._log('uploadFile: verify FAILED (attempt ' + attempt + '/' + MAX_ATTEMPTS + '): ' + lastDiag + ' — retrying');
-      if (attempt < MAX_ATTEMPTS) await new Promise((r2) => setTimeout(r2, 800));
+      if (attempt < MAX_ATTEMPTS) await new Promise((r2) => setTimeout(r2, 1000 * attempt)); // increasing backoff
     }
-    throw new Error('uploadFile: server accepted the upload but the file is not retrievable at the returned url (embedding it would show a broken image). last attempt: ' + lastDiag + ' — retry the call; a fresh attempt usually succeeds.');
+    throw new Error('uploadFile: server accepted the upload but the file is not retrievable at the returned url (embedding it would show a broken image). last attempt: ' + lastDiag + ' — this is the server\'s first-upload-after-login quirk; retry the call after 1-2 minutes (or in a fresh MCP session); nothing was embedded.');
   }
 
   // Fetch ALL rows of a paginated browse via the URL-path pagination this deployment uses.
