@@ -459,6 +459,8 @@ async function storyCreate(client: ZentaoClient, args: Record<string, any>): Pro
     'labels[]': '', 'files[]': '', 'mailto[]': '', keywords, type, uid
   };
   const storyAttachments = normAttachments(args);
+  // First upload right after login can fail server-side (see warmUploadIfNeeded) — absorb it before the form that carries real attachments.
+  const warmErr = storyAttachments.length ? await warmUploadIfNeeded(client, pageUrl) : null;
   const res = await client.postMultipartCreate(pageUrl, fields, storyAttachments);
   if (res.data && res.data.result === 'fail') throw new Error('Story create rejected: ' + JSON.stringify(res.data.message));
   if (!res.data || res.data.result !== 'success') throw new Error('Story create did not succeed: ' + JSON.stringify(res.data));
@@ -484,6 +486,8 @@ async function storyCreate(client: ZentaoClient, args: Record<string, any>): Pro
       } catch {}
     }
   }
+  // Verify attachments actually landed with content (the files[] flow has no per-file retry).
+  const storyAttachmentCheck = (storyAttachments.length && newStoryID) ? await verifyEntityFiles(client, 'story', Number(newStoryID), storyAttachments) : null;
   // 5. Auto-review: stories land in DRAFT; review(pass) activates them. Default ON so a single
   //    call yields an ACTIVE story with attachments already in place (attachments must be added
   //    BEFORE review — which is guaranteed here since they were uploaded during create).
@@ -498,6 +502,8 @@ async function storyCreate(client: ZentaoClient, args: Record<string, any>): Pro
     created: true, newStoryID: newStoryID ? Number(newStoryID) : null, url: viewUrl(client, 'story', newStoryID ? Number(newStoryID) : null), status: finalStatus, idempotent: false, idempotency_note: '重复调用会创建新需求（不会去重）',
     images: storyImages.length ? storyImages : undefined,
     attachments: storyAttachments.length ? storyAttachments.map((p) => ({ name: path.basename(p), bytes: fs.statSync(p).size })) : undefined,
+    ...(storyAttachmentCheck ? { attachmentsVerified: storyAttachmentCheck } : {}),
+    ...(warmErr || (storyAttachmentCheck && storyAttachmentCheck.broken.length) ? { warnings: [...(warmErr ? [warmErr] : []), ...(storyAttachmentCheck && storyAttachmentCheck.broken.length ? storyAttachmentCheck.broken.map((b) => 'attachment ' + b) : [])] } : {}),
     locate: res.data.locate || '',
     marker: client.config.markersEnabled
       ? { enabled: true, keywords, color: client.config.markerColor || null, note: 'Filter cloud stories by keywords prefix ' + (client.config.markerPrefix || 'MCP-AUTO') + ' (new stories start in draft status)' }
@@ -632,9 +638,11 @@ async function storyChange(client: ZentaoClient, args: Record<string, any>): Pro
   if (args.assignedTo) fields.assignedTo = args.assignedTo;
   // 3. Multipart POST.
   const storyAttachments = normAttachments(args);
+  const warmErr = storyAttachments.length ? await warmUploadIfNeeded(client, '/story-view-' + storyID + '.html') : null;
   const res = await client.postMultipartCreate('/story-change-' + storyID + '.html', fields, storyAttachments);
   if (res.data && res.data.result === 'fail') throw new Error('Story change rejected: ' + JSON.stringify(res.data));
-  return ok({ changed: true, storyID, url: viewUrl(client, 'story', storyID), marker: token, images: storyImages.length ? storyImages : undefined, attachments: storyAttachments.length ? storyAttachments.map((p) => ({ name: path.basename(p), bytes: fs.statSync(p).size })) : undefined, suggested_next: suggestedNext('story', 'change', storyID) });
+  const storyAttachmentCheck = storyAttachments.length ? await verifyEntityFiles(client, 'story', storyID, storyAttachments) : null;
+  return ok({ changed: true, storyID, url: viewUrl(client, 'story', storyID), marker: token, images: storyImages.length ? storyImages : undefined, attachments: storyAttachments.length ? storyAttachments.map((p) => ({ name: path.basename(p), bytes: fs.statSync(p).size })) : undefined, ...(storyAttachmentCheck ? { attachmentsVerified: storyAttachmentCheck } : {}), ...(warmErr || (storyAttachmentCheck && storyAttachmentCheck.broken.length) ? { warnings: [...(warmErr ? [warmErr] : []), ...(storyAttachmentCheck && storyAttachmentCheck.broken.length ? storyAttachmentCheck.broken.map((b) => 'attachment ' + b) : [])] } : {}), suggested_next: suggestedNext('story', 'change', storyID) });
 }
 
 // ---------- BUG ----------
@@ -948,6 +956,7 @@ async function bugCreate(client: ZentaoClient, args: Record<string, any>): Promi
     uid, case: 0, caseVersion: 0, result: 0, testtask: 0
   };
   const bugAttachments = normAttachments(args);
+  const warmErr = bugAttachments.length ? await warmUploadIfNeeded(client, pageUrl) : null;
   const res = await client.postMultipartCreate(pageUrl, fields, bugAttachments);
   if (res.data && res.data.result === 'fail') {
     throw new Error('Bug create rejected: ' + JSON.stringify(res.data.message));
@@ -970,12 +979,15 @@ async function bugCreate(client: ZentaoClient, args: Record<string, any>): Promi
       // No fallback: if not found by exact title(+token), return null (do not guess).
     } catch {}
   }
+  const bugAttachmentCheck = (bugAttachments.length && newBugID) ? await verifyEntityFiles(client, 'bug', newBugID, bugAttachments) : null;
   const buildObj = builds.find((b: Dyn) => String(b.id) === buildId);
   return ok({
     created: true, newBugID: newBugID ? Number(newBugID) : null, url: viewUrl(client, 'bug', newBugID ? Number(newBugID) : null), locate: res.data.locate || '', idempotent: false, idempotency_note: '重复调用会创建新 Bug（不会去重）',
     openedBuild: buildId + (buildObj ? ':' + buildObj.name : ''), type, severity, pri,
     images: stepsEmb.embedded.length ? stepsEmb.embedded : undefined,
     attachments: bugAttachments.length ? bugAttachments.map((p) => ({ name: path.basename(p), bytes: fs.statSync(p).size })) : undefined,
+    ...(bugAttachmentCheck ? { attachmentsVerified: bugAttachmentCheck } : {}),
+    ...(warmErr || (bugAttachmentCheck && bugAttachmentCheck.broken.length) ? { warnings: [...(warmErr ? [warmErr] : []), ...(bugAttachmentCheck && bugAttachmentCheck.broken.length ? bugAttachmentCheck.broken.map((b) => 'attachment ' + b) : [])] } : {}),
     marker: client.config.markersEnabled
       ? { enabled: true, keywords, color: client.config.markerColor || null, note: 'Filter cloud bugs by keywords prefix ' + (client.config.markerPrefix || 'MCP-AUTO') }
       : { enabled: false, note: 'MCP markers disabled (ZENTAO_MARKERS not set) — created bug is real data, no machine marker written' },
@@ -1576,6 +1588,46 @@ function normAttachments(args: Record<string, any>): string[] {
   const arr = Array.isArray(a) ? a : [a];
   return arr.map((x: unknown) => String(x).trim()).filter(Boolean);
 }
+// Absorb the server's "first upload after login can be silently stored 0-byte" quirk BEFORE
+// posting a create/change form that carries real attachments: the files[] upload happens inside
+// the form POST (no per-file verify/retry possible there), so if this session has not yet
+// performed a verified successful upload, do one throwaway verified upload first. The warm-up
+// png is orphaned (not linked to any object) — 70 bytes, harmless.
+const WARMUP_PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'base64');
+async function warmUploadIfNeeded(client: ZentaoClient, kuidPage: string): Promise<string | null> {
+  if (client.uploadWarmed) return null;
+  const tmp = path.join(os.tmpdir(), 'zlm-warmup-' + Date.now() + '.png');
+  fs.writeFileSync(tmp, WARMUP_PNG);
+  try {
+    await client.uploadFile(tmp, kuidPage); // uploadFile self-verifies + retries internally
+    return null;
+  } catch (e) {
+    return 'warm-up upload failed (first upload after login is flaky on this server): ' + (e as Error).message.slice(0, 160);
+  } finally {
+    try { fs.unlinkSync(tmp); } catch { /* best effort */ }
+  }
+}
+
+// After a create/change that carried attachments, verify the stored files actually have content.
+// The files[] flow cannot retry per file, so this surfaces 0-byte uploads and says what to do.
+async function verifyEntityFiles(client: ZentaoClient, kind: 'story' | 'bug', id: number | string, attachmentPaths: string[]): Promise<{ ok: string[]; broken: string[] }> {
+  const okNames: string[] = [];
+  const broken: string[] = [];
+  try {
+    const d = await client.viewJson('/' + kind + '-view-' + id + '.json');
+    const obj = d[kind] || {};
+    const files = Object.values(obj.files || {}) as Dyn[];
+    for (const p of attachmentPaths) {
+      const name = path.basename(p);
+      const f = files.find((x: Dyn) => String(x.title || '') === name);
+      if (!f) { broken.push(name + ' (not found in entity files)'); continue; }
+      if (Number(f.size) > 0) okNames.push(name);
+      else broken.push(name + ' (stored 0 bytes — first-upload-after-login quirk; re-run the update with the same attachment to re-upload it)');
+    }
+  } catch { /* non-fatal: view may lag a beat */ }
+  return { ok: okNames, broken };
+}
+
 
 // Module tree with graceful fallback (see ZentaoClient.getModuleTree for the
 // primary-route / product-browse-fallback logic shared with profile discovery).

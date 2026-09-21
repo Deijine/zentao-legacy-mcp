@@ -162,6 +162,9 @@ export class ZentaoClient {
   markStorySearchDirty(productID: number): void {
     this.storyDirtyProducts.add(Number(productID));
   }
+  // True once at least one upload in this session has been verified good (see uploadBuffer).
+  uploadWarmed = false;
+
   async ensureStoryScopeClean(productID: number): Promise<void> {
     if (!this.storyDirtyProducts.has(Number(productID))) return;
     this.storyDirtyProducts.delete(Number(productID));
@@ -688,53 +691,91 @@ export class ZentaoClient {
     return { status: res.status, location: res.headers.get('location') || '', data };
   }
 
-  // Upload a local file to the ZenTao file store via the KindEditor ajaxUpload route —
+// Upload a local file to the ZenTao file store via the KindEditor ajaxUpload route —
   // the SAME route the bug/story edit pages' image button uses
   // (page config: uploadJson: createLink('file', 'ajaxUpload', 'uid=' + kuid)).
   //   POST /file-ajaxUpload.html?uid=<kuid>  multipart, file field 'imgFile'
   //   response: {"error":0,"url":"/file-read-<fileID>.<ext>"}
   // Returned urls are publicly readable (no session needed), so they render in the UI.
+  //
+  // SELF-VERIFY (verified live 2026-09-18): the FIRST upload right after a fresh login can be
+  // silently stored as a 0-byte file under a wrong extension (.txt) while the response is still
+  // error:0 — the embedded image then renders broken. A re-upload seconds later succeeds. So
+  // every upload is verified after the fact (anonymous GET of the returned URL must return 200
+  // and be byte-identical); on mismatch the kuid is re-fetched and the upload retried (max 3).
+  // If all attempts fail, a descriptive error is thrown instead of embedding a broken URL.
   // @param localPath  local file to upload (must exist)
   // @param kuidPage   any authenticated form/view page on the site used to extract the
   //                   anti-CSRF kuid (e.g. '/bug-view-123.html'). View pages are lightest.
   async uploadFile(localPath: string, kuidPage: string): Promise<{ fileID: number; url: string; absUrl: string }> {
     const fs = await import('node:fs');
     const path = await import('node:path');
-    await this.ensureLogin();
     if (!fs.existsSync(localPath) || !fs.statSync(localPath).isFile()) {
       throw new Error('uploadFile: local file not found: ' + localPath);
     }
-    // 1. extract anti-CSRF kuid from an authenticated page
-    let kuid = '';
-    try {
-      const r = await this._get(this.config.baseUrl + kuidPage);
-      const html = await r.text();
-      kuid = html.match(/var kuid = '([a-f0-9]+)'/)?.[1] || '';
-    } catch (e) {
-      throw new Error('uploadFile: cannot fetch kuid from ' + kuidPage + ': ' + String(e));
+    const r = await this.uploadBuffer(fs.readFileSync(localPath), path.basename(localPath), kuidPage);
+    return { fileID: r.fileID, url: r.url, absUrl: r.absUrl };
+  }
+
+  // Core upload: buffer + filename. Same self-verify/retry contract as uploadFile.
+  // Exposed so callers can upload in-memory buffers (e.g. the pre-create warm-up upload that
+  // absorbs the first-upload-after-login failure before a form carrying real attachments).
+  async uploadBuffer(buf: Buffer, fname: string, kuidPage: string): Promise<{ fileID: number; url: string; absUrl: string; attempts: number }> {
+    await this.ensureLogin();
+    const MAX_ATTEMPTS = 3;
+    let lastDiag = '';
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      // 1. extract anti-CSRF kuid from an authenticated page (fresh per attempt)
+      let kuid = '';
+      try {
+        const r = await this._get(this.config.baseUrl + kuidPage);
+        const html = await r.text();
+        kuid = html.match(/var kuid = '([a-f0-9]+)'/)?.[1] || '';
+      } catch (e) {
+        if (attempt === MAX_ATTEMPTS) throw new Error('uploadFile: cannot fetch kuid from ' + kuidPage + ': ' + String(e));
+      }
+      if (!kuid) throw new Error('uploadFile: could not extract kuid from ' + kuidPage + ' (page layout changed?)');
+      // 2. multipart upload
+      const fd = new FormData();
+      fd.append('uid', kuid);
+      fd.append('imgFile', new Blob([new Uint8Array(buf)]), fname); // Uint8Array copy: tsgo rejects Buffer params as BlobPart
+      const headers = this._headers({ 'X-Requested-With': 'XMLHttpRequest' });
+      delete headers['Content-Type']; // let FormData set the multipart boundary
+      const res = await this._fetchWithTimeout(this.config.baseUrl + '/file-ajaxUpload.html?uid=' + kuid, {
+        method: 'POST', headers, body: fd, redirect: 'manual'
+      });
+      this._storeCookies(res);
+      const text = await res.text();
+      let data: any = null;
+      try { data = JSON.parse(text); } catch { data = { raw: text.slice(0, 200) }; }
+      if (!data || data.error) {
+        throw new Error('uploadFile failed for ' + fname + ': ' + JSON.stringify(data).slice(0, 200));
+      }
+      const url = String(data.url || '');
+      if (!url) throw new Error('uploadFile: no url in response: ' + JSON.stringify(data).slice(0, 200));
+      // 3. VERIFY: anonymous GET of the returned URL — must be publicly readable (NO Cookie
+      //    header on purpose: embedded images must render for any viewer) and byte-identical.
+      let verified = false;
+      let diag = '';
+      try {
+        const absUrl = url.startsWith('http') ? url : this.config.baseUrl + url;
+        const chk = await this._fetchWithTimeout(absUrl, { headers: { 'Accept': 'image/*, application/octet-stream, */*' }, redirect: 'follow' });
+        const chkBuf = Buffer.from(await chk.arrayBuffer());
+        verified = chk.status === 200 && chkBuf.length === buf.length && chkBuf.equals(buf);
+        diag = 'status=' + chk.status + ' bytes=' + chkBuf.length + '/' + buf.length + ' ctype=' + (chk.headers.get('content-type') || 'none');
+      } catch (e) {
+        diag = 'verify fetch failed: ' + (e as Error).message.slice(0, 100);
+      }
+      if (verified) {
+        this.uploadWarmed = true;
+        const m = url.match(/file-read-(\d+)/);
+        return { fileID: m ? Number(m[1]) : 0, url, absUrl: url.startsWith('http') ? url : this.config.baseUrl + url, attempts: attempt };
+      }
+      lastDiag = 'url=' + url + ' ' + diag;
+      this._log('uploadFile: verify FAILED (attempt ' + attempt + '/' + MAX_ATTEMPTS + '): ' + lastDiag + ' — retrying');
+      if (attempt < MAX_ATTEMPTS) await new Promise((r2) => setTimeout(r2, 800));
     }
-    if (!kuid) throw new Error('uploadFile: could not extract kuid from ' + kuidPage + ' (page layout changed?)');
-    // 2. multipart upload
-    const buf = fs.readFileSync(localPath);
-    const fd = new FormData();
-    fd.append('uid', kuid);
-    fd.append('imgFile', new Blob([buf]), path.basename(localPath));
-    const headers = this._headers({ 'X-Requested-With': 'XMLHttpRequest' });
-    delete headers['Content-Type']; // let FormData set the multipart boundary
-    const res = await this._fetchWithTimeout(this.config.baseUrl + '/file-ajaxUpload.html?uid=' + kuid, {
-      method: 'POST', headers, body: fd, redirect: 'manual'
-    });
-    this._storeCookies(res);
-    const text = await res.text();
-    let data: any = null;
-    try { data = JSON.parse(text); } catch { data = { raw: text.slice(0, 200) }; }
-    if (!data || data.error) {
-      throw new Error('uploadFile failed for ' + path.basename(localPath) + ': ' + JSON.stringify(data).slice(0, 200));
-    }
-    const url = String(data.url || '');
-    if (!url) throw new Error('uploadFile: no url in response: ' + JSON.stringify(data).slice(0, 200));
-    const m = url.match(/file-read-(\d+)/);
-    return { fileID: m ? Number(m[1]) : 0, url, absUrl: url.startsWith('http') ? url : this.config.baseUrl + url };
+    throw new Error('uploadFile: server accepted the upload but the file is not retrievable at the returned url (embedding it would show a broken image). last attempt: ' + lastDiag + ' — retry the call; a fresh attempt usually succeeds.');
   }
 
   // Fetch ALL rows of a paginated browse via the URL-path pagination this deployment uses.
