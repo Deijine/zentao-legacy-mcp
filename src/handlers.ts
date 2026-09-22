@@ -1990,12 +1990,12 @@ async function genericDelete(client: ZentaoClient, entity: string, id: number): 
   // Verify: soft delete sets deleted=1, entity disappears from browse but view still works
   const viewJson = await client.viewJson('/' + entity + '-view-' + id + '.json').catch(() => null);
   const obj = (viewJson as any)?.[entity] || (viewJson as any);
-  const deleted = obj?.deleted === 1 || obj?.deleted === true;
+  const deleted = String(obj?.deleted) === '1' || obj?.deleted === true; // view JSON returns deleted as the string "1"
   return ok({
     deleted: true, entity, id,
     url: viewUrl(client, entity, id),
     softDelete: true,
-    deletedField: deleted ? 1 : 'unverified',
+    deletedField: deleted ? 1 : 'unverified (删除动作已执行，view 未确认 deleted=1——请用 *_get 复核)',
     note: '软删除：deleted=1，列表不可见，URL+ID 仍可访问'
   });
 }
@@ -2046,11 +2046,11 @@ async function taskDelete(client: ZentaoClient, args: Record<string, any>): Prom
   // Verify soft delete
   const viewJson = await client.viewJson('/task-view-' + id + '.json').catch(() => null);
   const obj = (viewJson as any)?.task || (viewJson as any);
-  const deleted = obj?.deleted === 1 || obj?.deleted === true;
+  const deleted = String(obj?.deleted) === '1' || obj?.deleted === true; // view JSON returns deleted as the string "1"
   return ok({
     deleted: true, entity: 'task', id,
     softDelete: true,
-    deletedField: deleted ? 1 : 'unverified',
+    deletedField: deleted ? 1 : 'unverified (删除动作已执行，view 未确认 deleted=1——请用 *_get 复核)',
     note: '软删除：deleted=1，列表不可见，URL+ID 仍可访问'
   });
 }
